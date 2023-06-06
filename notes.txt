@@ -1,0 +1,38 @@
+
+Author notes:
+ There exists a way to get text from a googledocs, not sheets.
+  That might help someday.
+
+PROGRESS:
+
+NAME INPUT(done)
+
+RACES(wip)
+LINEAGES(wip)
+SUBRACES(wip)
+MUTANTS(done)
+
+CLANS(wip)
+TRIBES(wip)
+
+CLASSES
+SUBCLASES(unsuported)
+
+LEVELS(half there, waiting for updates. 
+Might come from google sheets data in the future).
+
+
+STATS(for the end)
+Author notes: could be just rolling and mod calculation, then
+the changes made by race and etc can be done mannually.
+
+
+
+Issues:
+Copy paste keeps the ugly background color
+
+changing the stat doesn't update properly in sheet
+
+background changes adds two blank spaces under the background name.
+
+Must delete features text and it might be added in js.
