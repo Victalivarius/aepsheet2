@@ -1,18 +1,26 @@
+// Helper function to assign values to characterData object
+function assignValueToCharacterData(property, rowData, columnIndex) {
+  if (rowData && rowData.c[columnIndex]) {
+    characterData[property] = rowData.c[columnIndex].v;
+  } else {
+    characterData[property] = '';
+  }
+}
+
 function htmlData() {
   const DIVbasicInfo = document.getElementById('DIVbasicInfo');
+  const DIVFeatures = document.getElementById('DIVFeatures');
 
-  DIVbasicInfo.innerHTML = `═════════<br><h2>${characterData.name|| ''}</h2>═════════
-  <br>
-  Player:${characterData.player|| ''}
+  DIVbasicInfo.innerHTML = `═════════<br><h2>${characterData.name || ''}</h2>═════════
+    <t id="output_player">Player:${characterData.player || ''}</t>
     <br>
-    <b>Race:</b>
-    <t id="output_race_name">${characterData.race || ''}</t>
+    
+    <t id="output_race_name"><b>Race:</b>${characterData.race || ''}</t>
     <br>
-    <t id="output_lineage">${characterData.lineage || ''}</t>
     
-    <t id="output_mutant">${characterData.mutation || ''}</t>
-    
-    <t id="output_subrace"><b>Subrace:</b>${characterData.subrace ? `<t id="output_subrace">${characterData.subrace}</t><br>` : ''}
+    <t id="output_lineage">${characterData.lineage ? `<b>Lineage:</b> ${characterData.lineage}<br>` : ''}</t>
+    <t id="output_mutant">${characterData.mutant ? `<b>Mutant:</b> ${characterData.mutant}<br>` : ''}</t>
+    <t id="output_subrace">${characterData.subrace ? `<b>Subrace:</b> ${characterData.subrace}<br>` : ''}</t>
     
     <b>Languages:</b>
     <t id="background_languages">${characterData.languages || ''}</t>
@@ -22,11 +30,21 @@ function htmlData() {
     <br>
     <b>Speed:</b>
     <t id="output_speed">${characterData.speed || ''}</t>
-    <t id="race_speed">${characterData.raceSpeed || ''}</t>
-    <t id="lineage_speed">${characterData.lineageSpeed || ''}</t>
-    <t id="subrace_speed">${characterData.subraceSpeed || ''}</t>
-    <t id="mutation_speed">${characterData.mutationSpeed || ''}</t>
+    <t id="lineage_speed">${characterData.speed_lineage || ''}</t>
+    <t id="subrace_speed">${characterData.speed_subrace || ''}</t>
+    <t id="mutant_speed">${characterData.speed_mutant || ''}</t>
   `;
+
+  DIVFeatures.innerHTML = `
+  <div id="output_race_features" style="white-space: pre-line;">${characterData.features || ''}</div>
+  <div id="output_lineage_features" style="white-space: pre-line;">${characterData.features_lineage || ''}</div>
+  <div id="output_mutant_features" style="white-space: pre-line;">${characterData.features_mutant || ''}</div>
+  <div id="output_subrace_features" style="white-space: pre-line;">${characterData.features_subrace || ''}</div>
+  <div id="output_clan_features"></div>
+  <div id="output_class_features"></div>
+  <div id="output_background_features"></div>
+`;
+
 
   const outputSubrace = document.getElementById('output_subrace');
   if (!characterData.subrace) {
@@ -34,18 +52,34 @@ function htmlData() {
   } else {
     outputSubrace.style.display = 'block';
   }
+  
+  const outputMutant = document.getElementById('output_mutant');
+  if (!characterData.mutant) {
+    outputMutant.style.display = 'none';
+  } else {
+    outputMutant.style.display = 'block';
+  }
+
+  const outputLineage = document.getElementById('output_lineage');
+  if (!characterData.lineage) {
+    outputLineage.style.display = 'none';
+  } else {
+    outputLineage.style.display = 'block';
+  }
+
+  const outputPlayer = document.getElementById('output_player');
+  if (!characterData.player) {
+    outputPlayer.style.display = 'none';
+  } else {
+    outputPlayer.style.display = 'block';
+  }
 
   console.log("Sheet updated successfully");
 };
 
-// Helper function to assign values to characterData object
-function assignValueToCharacterData(property, rowData, columnIndex) {
-  if (rowData && rowData.c[columnIndex]) {
-    characterData[property] = rowData.c[columnIndex].v;
-  } else {
-    characterData[property] = '';
-  }
-}
+
+
+
 
 function updateInnerHTML(element, rowData, columnIndex, title) {
   if (rowData && rowData.c[columnIndex] && rowData.c[columnIndex].v) {

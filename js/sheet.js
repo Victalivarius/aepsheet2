@@ -1,17 +1,23 @@
 ///////////////////////////////VARIABLES////////////////////////////////
 
+
+
 let characterData = {
     race: "",
     subrace: "",
     lineage: "",
-    mutation: "",
+    mutant: "",
     class: "",
     background: "",
     stats: {},
     proficiencies: [],
     features: [],
+    features_lineage: [],
+    features_mutant: [],
+    features_subrace: [],
     languages: [],
     speed: 0,
+    speed_subrace: 0,
     hitDice: "",
     indications: "",
     description: "",
@@ -24,7 +30,8 @@ const SHEET_TRIBESCLANS = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEE
 const SHEET_BACKGROUNDS = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?sheet=BACKGROUNDS&range=A1:I47'
 const SHEET_CLASSES = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?sheet=CLASSES&range=A1:J17'
 
-  
+htmlData();
+
 ///////////////////////////////VARIABLES////////////////////////////////
 
     //inputs
@@ -45,15 +52,15 @@ const SHEET_CLASSES = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID
     //outputs
     let output_character_name = document.getElementById('output_character_name');
     let output_player_name = document.getElementById('output_player_name'); 
-    let output_race_traits = document.getElementById('output_race_traits');
+    let output_race_features = document.getElementById('output_race_features');
     let output_race_name = document.getElementById('output_race_name');
     let output_languages = document.getElementById('output_languages');
     let output_subrace = document.getElementById('output_subrace');
     let output_mutant = document.getElementById('output_mutant');
     let output_lineage = document.getElementById('output_lineage');
-    let output_lineage_traits = document.getElementById('output_lineage_traits');
-    let output_mutant_traits = document.getElementById('output_mutant_traits');
-    let output_subrace_traits = document.getElementById('output_subrace_traits');
+    let output_lineage_features = document.getElementById('output_lineage_features');
+    let output_mutant_features = document.getElementById('output_mutant_features');
+    let output_subrace_features = document.getElementById('output_subrace_features');
     let output_class_features = document.getElementById('output_class_features');
     let hitdice = document.getElementById('hitdice');
     let output_HP = document.getElementById('output_HP');
@@ -130,14 +137,14 @@ race_select.addEventListener('change', (event) => {
   // Assign race features to characterData.features
   assignValueToCharacterData('features', selectedRow, 3);
 
-  // Assign race speed to characterData.speed
-  assignValueToCharacterData('speed', selectedRow, 5);
-
   // Assign race languages to characterData.languages
   assignValueToCharacterData('languages', selectedRow, 4);
 
-  
-  console.log('Race information set successfully');
+  // Assign race speed to characterData.speed
+  assignValueToCharacterData('speed', selectedRow, 5);
+
+  htmlData()
+  console.log(characterData.features);
 });
 
 
@@ -150,7 +157,6 @@ race_select.addEventListener('change', (event) => {
 // Event listener for the lineage checkbox
 input_lineage_checkbox.addEventListener("change", function() {
   if (input_lineage_checkbox.checked) {
-
     data.table.rows.forEach((row) => {
       if (row.c[9]) {
         const option = document.createElement("option");
@@ -160,28 +166,34 @@ input_lineage_checkbox.addEventListener("change", function() {
       }
     });
 
-    lineage_select.addEventListener('change', (event) => {
+  lineage_select.addEventListener('change', (event) => {
       const selectedLineage = event.target.value;
       const selectedRow = data.table.rows.find((row) => row.c[9].v === selectedLineage);
-      output_lineage.innerHTML = '<b>' + `Lineage:`+ '</b>' +  selectedLineage;
-      output_lineage_traits.innerHTML =  '<br>' + selectedRow.c[10].v.replace(/\n/g, '<br>');
+      
+      characterData.lineage = selectedLineage;
 
+  // Assign race features to characterData.features
+  assignValueToCharacterData('features_lineage', selectedRow, 10);
+
+      htmlData();
+      console.log(characterData.features_lineage);
     });
 
-    output_lineage_traits.style.display = "block"
+    output_lineage_features.style.display = "block";
     lineage_select_div.style.display = "block";
     output_lineage.style.display = "block";
 
   } else {
-    output_lineage_traits.style.display = "none"
+    output_lineage_features.style.display = "none";
     lineage_select_div.style.display = "none";
     output_lineage.style.display = "none";
+    characterData.lineage = '';
+    htmlData();
   }
 });
 
 // Event listener for the mutant checkbox
 input_mutant_checkbox.addEventListener("change", function() {
-
   if (input_mutant_checkbox.checked) {
     data.table.rows.forEach((row) => {
       if (row.c[19]) {
@@ -189,28 +201,36 @@ input_mutant_checkbox.addEventListener("change", function() {
         option.value = row.c[19].v;
         option.text = row.c[19].v;
         mutant_select.appendChild(option);
-        // console.log(row.c[19].v)
       }
     });
 
     mutant_select.addEventListener('change', (event) => {
       const selectedMutant = event.target.value;
+      characterData.mutant = selectedMutant;
+
       const selectedRow = data.table.rows.find((row) => row.c[19].v === selectedMutant);
-      output_mutant.innerHTML = '<b>' + `Mutation:`+ '</b>'+ selectedMutant;
-  
-      output_mutant_traits.innerHTML =  '<br>' + "+----------------"+ selectedMutant + " MUTATION TRAITS------------------+" + '<br>' +  selectedRow.c[20].v.replace(/\n/g, '<br>');
+
+  // Assign race features to characterData.features
+  assignValueToCharacterData('features_mutant', selectedRow, 20);
+
+      htmlData();
+      console.log(characterData.features_mutant);
     });
 
-    output_mutant_traits.style.display = "block"
+    output_mutant_features.style.display = "block";
     mutant_select_div.style.display = "block";
     output_mutant.style.display = "block";
 
   } else {
-    output_mutant_traits.style.display = "none"
+    output_mutant_features.style.display = "none";
     mutant_select_div.style.display = "none";
     output_mutant.style.display = "none";
+    characterData.mutant = '';
+    htmlData();
   }
 });
+
+
 
 // Event listener for the subrace checkbox
 input_subrace_checkbox.addEventListener("change", function() {
@@ -225,18 +245,27 @@ input_subrace_checkbox.addEventListener("change", function() {
       }
     });
 
-        subrace_select.addEventListener('change', (event) => {
+  subrace_select.addEventListener('change', (event) => {
           const selectedSubrace = event.target.value;
           characterData.subrace = selectedSubrace;
-          htmlData();
+          const selectedRow = data.table.rows.find((row) => row.c[12].v === selectedSubrace);
+
+          
+
+  // Assign subrace features to characterData.features
+  assignValueToCharacterData('features_subrace', selectedRow, 14);
+  assignValueToCharacterData('speed_subrace', selectedRow, 15);
+
+      htmlData();
+      console.log(characterData.features_subrace);
         });
     
-        output_subrace_traits.style.display = "block"
+        output_subrace_features.style.display = "block"
         subrace_select_div.style.display = "block";
       
     
       } else {
-        output_subrace_traits.style.display = "none"
+        output_subrace_features.style.display = "none"
         subrace_select_div.style.display = "none";
       
         characterData.subrace = '';

@@ -94,20 +94,3 @@ function die() {
   // Add event listener to roll stats button
   const rollStatsButton = document.getElementById("roll-stats-button");
   rollStatsButton.addEventListener("click", rollStats);
-
-
-  const tabList = document.querySelector('.tab-list');
-const tabs = tabList.querySelectorAll('li');
-const tabContents = document.querySelectorAll('.tab-content');
-
-tabs.forEach((tab) => {
-  tab.addEventListener('click', () => {
-    // remove active class from all tabs and tab contents
-    tabs.forEach((t) => t.classList.remove('active'));
-    tabContents.forEach((tc) => tc.classList.remove('active'));
-    // add active class to clicked tab and corresponding tab content
-    tab.classList.add('active');
-    const tabId = tab.getAttribute('data-tab');
-    document.querySelector(`#${tabId}`).classList.add('active');
-  });
-});

@@ -53,7 +53,7 @@
 
             <div id="mutant_select_div" style="display:none;">
                 <select id="mutant_select">
-                    <option disabled selected>Select a mutation type</option>
+                    <option disabled selected>Select a mutant type</option>
                     <!-- Options will be dynamically populated with JavaScript -->
                 </select>
             </div>
@@ -185,6 +185,7 @@
             <div id="DIVbasicInfo">
           
         </div>
+        <div id="DIVClassInfo">
             <div>+-------------------------------------------+</div>
             <b>Class:</b>
             <t id="output_class_name"></t><br>
@@ -199,12 +200,12 @@
             <t id="output_AC"></t><br>
             <b>Initiative:</b>
             <t id="output_Initiative"></t><br>
-
+        </div>
             <div>
                 <h3>═══════════════STATS═══════════════</b>
             </div>
 
-            <div>
+            <div id="DIVStatsInfo">
                 <p><b>Strength:</b> <span id="strValue"></span> (<span id="strModifier"></span>)</p>
                 <p>║Athletics <span class="strSkills">()</span>
                      ║ Strength Saving Throw <span class="strSkills">()</span>
@@ -249,18 +250,9 @@
             <div>
                 <h3>═══════════FEATURES══════════════</h3>
             </div>
+        <div id="DIVFeatures">
  
-            <div id="output_race_traits"></div>
-
-            <div id="output_lineage_traits"></div>
-            <div id="output_mutant_traits"></div>
-            <div id="output_subrace_traits"></div>
-            <div id="output_clan_traits"></div>
-
-            <div id="output_class_features"></div>
-          
-            <div id="output_background_features"></div>
-            <div>
+        </div>
                 <!-- <h3>════════════BATTLE══════════════</h3>
             </div>
             <div id="weapon">WEAPON</div>
