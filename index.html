@@ -16,7 +16,7 @@
     <div class="container">
 
 
- 
+
         <!-- __  __  ______  _   _  _    _ 
             |  \/  ||  ____|| \ | || |  | |
             | \  / || |__   |  \| || |  | |
@@ -24,12 +24,12 @@
             | |  | || |____ | |\  || |__| |
             |_|  |_||______||_| \_| \____/ 
                                 -->
-<div class="header">
-    <a href="index.html">Aepsheet</a>
-    <a href="ChaMakerPixi\chaMaker.html">AepIcon</a>
-    </div>
+        <div class="header">
+            <a href="index.html">Aepsheet</a>
+            <a href="ChaMakerPixi\chaMaker.html">AepIcon</a>
+        </div>
         <div class="menu" id="menu">
-           
+
             <h3>Menu</h3>
             <label for="input_character_name">Character Name:</label><br>
             <input type="text" id="input_character_name">
@@ -96,7 +96,7 @@
                 <option value="Chaotic Evil">Chaotic Evil</option>
                 <option value="Unaligned">Unaligned</option>
                 <!-- Options will be dynamically populated with JavaScript -->
-            </select> 
+            </select>
             <br>
 
             <label for="background_select">Background:</label><br>
@@ -106,7 +106,7 @@
             </select><br>
             <p id="selected_backgrounds"></p>
 
-           
+
 
             <!------------------------- CLASS OPTIONS--------------------------------->
             <br>
@@ -130,14 +130,14 @@
             <hr>
             <h4>Stats options</h4>
             <button id="roll-stats-button">Roll stats</button>
-            
+
             <img id="dice_image" src="dice-twenty-faces-twenty.png" alt="" class="diceimg rotate">
             <br>
             <b>Strength:</b>
             <input type="number" id="strInput" min="1" max="20" value="10">
             (<span id="strMod"></span>)
             <br>
-            
+
             <b>Dexterity:</b>
             <input type="number" id="dexInput" min="1" max="20" value="10">
             (<span id="dexMod"></span>)
@@ -147,7 +147,7 @@
             <input type="number" id="conInput" min="1" max="20" value="10">
             (<span id="conMod"></span>)
             <br>
-            
+
             <b>Intelligence:</b>
             <input type="number" id="intInput" min="1" max="20" value="10">
             (<span id="intMod"></span>)
@@ -183,24 +183,25 @@
         <div id="result" class="sheet">
 
             <div id="DIVbasicInfo">
-          
-        </div>
-        <div id="DIVClassInfo">
+
+            </div>
             <div>+-------------------------------------------+</div>
-            <b>Class:</b>
-            <t id="output_class_name"></t><br>
-            <b>Background:</b>
-            <t id="output_background_name"></t><br>
-            <b>Level:</b>
-            <t id="output_level"></t><br>
-            <b>HP:</b>
-            <t id="output_HP"></t>
-            <t id="hitdice"></t><br>
-            <b>AC:</b>
-            <t id="output_AC"></t><br>
-            <b>Initiative:</b>
-            <t id="output_Initiative"></t><br>
-        </div>
+            <div id="DIVClassInfo">
+               
+                <!-- <b>Class:</b>
+                <t id="output_class_name"></t><br>
+                <b>Background:</b>
+                <t id="output_background_name"></t><br>
+                <b>Level:</b>
+                <t id="output_level"></t><br>
+                <b>HP:</b>
+                <t id="output_HP"></t>
+                <t id="hitdice"></t><br>
+                <b>AC:</b>
+                <t id="output_AC"></t><br>
+                <b>Initiative:</b>
+                <t id="output_Initiative"></t><br> -->
+            </div>
             <div>
                 <h3>═══════════════STATS═══════════════</b>
             </div>
@@ -208,57 +209,59 @@
             <div id="DIVStatsInfo">
                 <p><b>Strength:</b> <span id="strValue"></span> (<span id="strModifier"></span>)</p>
                 <p>║Athletics <span class="strSkills">()</span>
-                     ║ Strength Saving Throw <span class="strSkills">()</span>
+                    ║ Strength Saving Throw <span class="strSkills">()</span>
                 </p>
                 <p><b>Dexterity:</b> <span id="dexValue"></span> (<span id="dexModifier"></span>)</p>
                 <p>║ Acrobatics <span class="dexSkills">()</span>
-                     ║ Sleight of Hands <span class="dexSkills">()</span>
-                      ║ Stealth <span class="dexSkills">()</span> 
-                      ║ Dexterity Saving Throw <span class="dexSkills">()</span>
+                    ║ Sleight of Hands <span class="dexSkills">()</span>
+                    ║ Stealth <span class="dexSkills">()</span>
+                    ║ Dexterity Saving Throw <span class="dexSkills">()</span>
                 </p>
                 <p><b>Constitution:</b> <span id="conValue"></span> (<span id="conModifier"></span>)</p>
                 <p>║ Constitution Saving Throw <span class="conSkills">()</span>
-                    </p>
+                </p>
                 <p><b>Intelligence:</b> <span id="intValue"></span> (<span id="intModifier"></span>)</p>
-                <p> ║ Arcana <span class="intSkills">()</span> ║ History <span class="intSkills">()</span> ║ 
-                    Investigation <span class="intSkills">()</span> ║ Nature <span class="intSkills">()</span> ║ 
-                    Religion <span class="intSkills">()</span> ║ Intelligence Saving Throw <span class="intSkills">()</span>
+                <p> ║ Arcana <span class="intSkills">()</span> ║ History <span class="intSkills">()</span> ║
+                    Investigation <span class="intSkills">()</span> ║ Nature <span class="intSkills">()</span> ║
+                    Religion <span class="intSkills">()</span> ║ Intelligence Saving Throw <span
+                        class="intSkills">()</span>
                 </p>
                 <p><b>Wisdom:</b> <span id="wisValue"></span> (<span id="wisModifier"></span>)</p>
-                <p>║ Animal Handling <span class="wisSkills">()</span> ║ Insight <span class="wisSkills">()</span> 
-                    ║ Medicine <span class="wisSkills">()</span> ║ Perception <span class="wisSkills">()</span> ║ 
+                <p>║ Animal Handling <span class="wisSkills">()</span> ║ Insight <span class="wisSkills">()</span>
+                    ║ Medicine <span class="wisSkills">()</span> ║ Perception <span class="wisSkills">()</span> ║
                     Survival <span class="wisSkills">()</span> ║ Wisdom Saving Throw <span class="wisSkills">()</span>
                 </p>
                 <p><b>Charisma:</b> <span id="chaValue"></span> (<span id="chaModifier"></span>)</p>
-                <p>║ Deception <span class="chaSkills">()</span> ║ Intimidation <span class="chaSkills">()</span> ║ 
+                <p>║ Deception <span class="chaSkills">()</span> ║ Intimidation <span class="chaSkills">()</span> ║
                     Performance <span class="chaSkills">()</span> ║ Persuasion <span class="chaSkills">()</span> ║
-                     Charisma Saving Throw <span class="chaSkills">()</span>
+                    Charisma Saving Throw <span class="chaSkills">()</span>
                 </p>
-              </div>
+            </div>
             <div id="output_proficiency"></div>
 
- <div class="w3-panel w3-red">
-    Must be done manually:
-            <div id="output_stats"></div>
-            <div id='race_stats'></div>
-            <div id='subrace_stats'></div>
-            <div id='lineage_stats'></div>
-            <div id='background_stats'></div>
-            <div id='class_stats'></div>
-        </div>
+            <div class="w3-panel w3-red">
+                Must be done manually:
+                <div id="output_stats"></div>
+                <div id='race_stats'></div>
+                <div id='subrace_stats'></div>
+                <div id='lineage_stats'></div>
+                <div id='background_stats'></div>
+                <div id='class_stats'></div>
+            </div>
 
             <div>
-                <h3>═══════════FEATURES══════════════</h3>
+                <h3>═════════════FEATURES═════════════</h3>
             </div>
-        <div id="DIVFeatures">
- 
-        </div>
-                <!-- <h3>════════════BATTLE══════════════</h3>
+            <div id="DIVFeatures">
+            </div>
+
+            <div>
+            <h3>═════════════BATTLE═════════════</h3>
             </div>
             <div id="weapon">WEAPON</div>
 
             <div>
-                <h3>════════════EQUIPMENT═════════════</h3>
+                <h3>═════════════EQUIPMENT═════════════</h3>
             </div>
 
 
@@ -266,35 +269,24 @@
             <div id="tools_proficiency">TOOLS PROFICIENCY</div>
             <div id="companion">COMPANION</div>
             <div>
-                <h3>═════════════MORE══════════════</h3> -->
-
-            </div>
-                </div>
-                <div id="tab-2" class="tab-content" >
-                 Soon auto formatting for discord
-                </div>
-                <div id="tab-3" class="tab-content">
-                    Soon auto formatting for discord(short)
-                </div>
-              
-
-              
-
+                <h3>═════════════MORE═════════════</h3>
 
         </div>
+    </div>
 
 
-        <div class="info">
-            <h4>Indications</h4>
-            <div id='race_indications'></div>
-            <div id='subrace_indications'></div>
-            <div id='lineage_indications'></div>
-            <div id='background_indications'></div>
-            <div id='class_indications'></div>
-            <hr>
-            <h5>rolls</h5>
-            <div id='rolls'></div>
-        </div>
+
+    <div class="info">
+        <h4>Indications</h4>
+        <div id='race_indications'></div>
+        <div id='subrace_indications'></div>
+        <div id='lineage_indications'></div>
+        <div id='background_indications'></div>
+        <div id='class_indications'></div>
+        <hr>
+        <h5>rolls</h5>
+        <div id='rolls'></div>
+    </div>
 
 
     </div>
@@ -303,4 +295,5 @@
 <script src="js/init.js"></script>
 <script src="js/stats.js"></script>
 <script src="js/sheet.js"></script>
+
 </html>

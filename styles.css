@@ -4,9 +4,7 @@ body {
   padding: 15px;
   color: #16151a;
   background: #d2ab7f;
-  
 };
-
 
 .sheet {
   border-radius: 2px;
@@ -19,9 +17,10 @@ body {
   padding: 1.5rem;
 }
 
-.container {  display: grid;
-  grid-template-columns: 0.6fr 1.5fr 0.9fr;
-  grid-template-rows: 0.2fr [\35 ] 2.7fr 0.1fr;
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Updated to distribute space evenly */
+  grid-template-rows: 0.2fr [\35] 2.7fr 0.1fr;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
@@ -29,6 +28,7 @@ body {
     "menu sheet info"
     "footnotes footnotes footnotes";
 }
+
 
 .header { grid-area: header; }
 
@@ -102,39 +102,6 @@ body {
   100% {
     transform: rotate(360deg);
   }
-}
-
-/* TABS */
-/* TABS */
-/* TABS */
-
-.tab-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.tab-list li {
-  display: inline-block;
-  margin-right: 10px;
-  padding: 5px 10px;
-  background-color: #ccc;
-  border-radius: 5px 5px 0 0;
-  cursor: pointer;
-}
-
-.tab-list li.active {
-  background-color: #fff;
-}
-
-.tab-content {
-  display: none;
-  padding: 10px;
-  border: 1px solid #ccc;
-}
-
-.tab-content.active {
-  display: block;
 }
 
 .fade-out {

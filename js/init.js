@@ -9,6 +9,7 @@ function assignValueToCharacterData(property, rowData, columnIndex) {
 
 function htmlData() {
   const DIVbasicInfo = document.getElementById('DIVbasicInfo');
+  const DIVClassInfo = document.getElementById('DIVClassInfo');
   const DIVFeatures = document.getElementById('DIVFeatures');
 
   DIVbasicInfo.innerHTML = `═════════<br><h2>${characterData.name || ''}</h2>═════════
@@ -35,14 +36,27 @@ function htmlData() {
     <t id="mutant_speed">${characterData.speed_mutant || ''}</t>
   `;
 
+  DIVClassInfo.innerHTML = `
+  <b>Class:</b>${characterData.class || ''}
+                <t id="output_class_name"></t><br>
+                <b>Background:</b>${characterData.background || ''}</t><br>
+                <b>Level:</b>
+                <t id="output_level"></t><br>
+                <b>HP:</b></t>${characterData.hitDice || ''}<br>
+                <b>AC:</b>
+                <t id="output_AC"></t><br>
+                <b>Initiative:</b>
+                <t id="output_Initiative"></t><br>
+  `
+
+
   DIVFeatures.innerHTML = `
-  <div id="output_race_features" style="white-space: pre-line;">${characterData.features || ''}</div>
-  <div id="output_lineage_features" style="white-space: pre-line;">${characterData.features_lineage || ''}</div>
-  <div id="output_mutant_features" style="white-space: pre-line;">${characterData.features_mutant || ''}</div>
-  <div id="output_subrace_features" style="white-space: pre-line;">${characterData.features_subrace || ''}</div>
-  <div id="output_clan_features"></div>
-  <div id="output_class_features"></div>
-  <div id="output_background_features"></div>
+  <div id="output_race_features" style="white-space: pre-line;">   <b>${characterData.race || ''}</b>  <br>  ${characterData.features || ''}</div>
+  <div id="output_lineage_features" style="white-space: pre-line;">  <b>${characterData.lineage || ''}</b>  <br> ${characterData.features_lineage || ''}</div>
+  <div id="output_mutant_features" style="white-space: pre-line;">  <b>${characterData.mutant || ''}</b>  <br> ${characterData.features_mutant || ''}</div>
+  <div id="output_subrace_features" style="white-space: pre-line;"> <b>${characterData.subrace || ''}</b> <br>  ${characterData.features_subrace || ''}</div>
+  <div id="output_class_features" style="white-space: pre-line;"> <b>${characterData.class || ''}</b> <br>  ${characterData.features_class || ''}</div>
+  <div id="output_background_features" style="white-space: pre-line;"> <b>${characterData.background || ''}</b> <br>  ${characterData.features_background || ''}</div>
 `;
 
 
@@ -52,7 +66,7 @@ function htmlData() {
   } else {
     outputSubrace.style.display = 'block';
   }
-  
+
   const outputMutant = document.getElementById('output_mutant');
   if (!characterData.mutant) {
     outputMutant.style.display = 'none';
@@ -97,35 +111,35 @@ function updateInnerHTML(element, rowData, columnIndex, title) {
 function copySheet() {
   const sheetContainer = document.getElementById('result');
   const body = document.body;
-  
+
   // Store the original background colors
   const originalSheetBackgroundColor = sheetContainer.style.backgroundColor;
   const originalBodyBackgroundColor = body.style.backgroundColor;
-  
+
   // Set the background colors to transparent
   sheetContainer.style.backgroundColor = 'transparent';
   body.style.backgroundColor = 'transparent';
-  
+
   // Create a range and select the sheet container
   const range = document.createRange();
   range.selectNode(sheetContainer);
-  
+
   // Copy the selected range
   window.getSelection().removeAllRanges();
   window.getSelection().addRange(range);
   document.execCommand('copy');
   window.getSelection().removeAllRanges();
-  
+
   // Restore the original background colors
   sheetContainer.style.backgroundColor = originalSheetBackgroundColor;
   body.style.backgroundColor = originalBodyBackgroundColor;
-  
-   // Show the copy message
-   const copyMessage = document.getElementById('copy-message');
-   copyMessage.style.display = 'block';
- 
-   // Hide the copy message after 5 seconds
-   setTimeout(() => {
-     copyMessage.style.display = 'none';
-   }, 2000);
+
+  // Show the copy message
+  const copyMessage = document.getElementById('copy-message');
+  copyMessage.style.display = 'block';
+
+  // Hide the copy message after 5 seconds
+  setTimeout(() => {
+    copyMessage.style.display = 'none';
+  }, 2000);
 };
