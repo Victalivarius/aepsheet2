@@ -1,5 +1,4 @@
 
-
 function updateInnerHTML(element, rowData, columnIndex, title) {
   if (rowData && rowData.c[columnIndex] && rowData.c[columnIndex].v) {
     let html = '';
