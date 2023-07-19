@@ -1,3 +1,51 @@
+function htmlData() {
+  const DIVbasicInfo = document.getElementById('DIVbasicInfo');
+
+  DIVbasicInfo.innerHTML = `═════════<br><h2>${characterData.name|| ''}</h2>═════════
+  <br>
+  Player:${characterData.player|| ''}
+    <br>
+    <b>Race:</b>
+    <t id="output_race_name">${characterData.race || ''}</t>
+    <br>
+    <t id="output_lineage">${characterData.lineage || ''}</t>
+    
+    <t id="output_mutant">${characterData.mutation || ''}</t>
+    
+    <t id="output_subrace"><b>Subrace:</b>${characterData.subrace ? `<t id="output_subrace">${characterData.subrace}</t><br>` : ''}
+    
+    <b>Languages:</b>
+    <t id="background_languages">${characterData.languages || ''}</t>
+    <br>
+    <b>Alignment:</b>
+    <t id="output_alignment">${characterData.alignment || ''}</t>
+    <br>
+    <b>Speed:</b>
+    <t id="output_speed">${characterData.speed || ''}</t>
+    <t id="race_speed">${characterData.raceSpeed || ''}</t>
+    <t id="lineage_speed">${characterData.lineageSpeed || ''}</t>
+    <t id="subrace_speed">${characterData.subraceSpeed || ''}</t>
+    <t id="mutation_speed">${characterData.mutationSpeed || ''}</t>
+  `;
+
+  const outputSubrace = document.getElementById('output_subrace');
+  if (!characterData.subrace) {
+    outputSubrace.style.display = 'none';
+  } else {
+    outputSubrace.style.display = 'block';
+  }
+
+  console.log("Sheet updated successfully");
+};
+
+// Helper function to assign values to characterData object
+function assignValueToCharacterData(property, rowData, columnIndex) {
+  if (rowData && rowData.c[columnIndex]) {
+    characterData[property] = rowData.c[columnIndex].v;
+  } else {
+    characterData[property] = '';
+  }
+}
 
 function updateInnerHTML(element, rowData, columnIndex, title) {
   if (rowData && rowData.c[columnIndex] && rowData.c[columnIndex].v) {

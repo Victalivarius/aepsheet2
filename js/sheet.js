@@ -28,6 +28,7 @@ const SHEET_CLASSES = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID
 ///////////////////////////////VARIABLES////////////////////////////////
 
     //inputs
+    let DIVbasicInfo = document.getElementById('DIVbasicInfo');
     let race_select = document.getElementById('race_select');
     let input_character_name = document.getElementById('input_character_name');
     let input_player_name = document.getElementById('input_player_name');
@@ -66,21 +67,21 @@ const SHEET_CLASSES = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID
 // CHARACTER NAME
 input_character_name.addEventListener('change', (event) => {
   characterData.name = event.target.value;
-  output_character_name.innerHTML = characterData.name;
+  htmlData();
   console.log('Character name updated successfully');
 });
 
 // PLAYER NAME
 input_player_name.addEventListener('change', (event) => {
   characterData.player = event.target.value;
-  output_player_name.innerHTML = `<br> Player: ${characterData.player}`;
+  htmlData();
   console.log('Player name updated successfully');
 });
 
 // ALIGNMENT
 alignment_select.addEventListener('change', (event) => {
   characterData.alignment = event.target.value;
-  output_alignment.innerHTML = characterData.alignment;
+  htmlData();
   console.log('Alignment updated successfully');
 });
 
@@ -125,17 +126,20 @@ race_select.addEventListener('change', (event) => {
   const selectedRow = data.table.rows.find((row) => row.c[0].v === selectedRace);
 
   characterData.race = selectedRace;
-  output_race_name.innerHTML = characterData.race;
 
-  updateInnerHTML(output_race_traits, selectedRow, 3, "<b>+--------RACIAL TRAITS--------+</b>" + "<br>");
-  updateInnerHTML(race_speed, selectedRow, 5);
-  updateInnerHTML(race_stats, selectedRow, 1, "Race stats: ");
-  updateInnerHTML(race_languages, selectedRow, 4);
+  // Assign race features to characterData.features
+  assignValueToCharacterData('features', selectedRow, 3);
 
-  output_race.innerHTML = `Race: ${selectedRace}`;
+  // Assign race speed to characterData.speed
+  assignValueToCharacterData('speed', selectedRow, 5);
 
+  // Assign race languages to characterData.languages
+  assignValueToCharacterData('languages', selectedRow, 4);
+
+  
   console.log('Race information set successfully');
 });
+
 
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -221,24 +225,25 @@ input_subrace_checkbox.addEventListener("change", function() {
       }
     });
 
-    subrace_select_div.style.display = "block";
+        subrace_select.addEventListener('change', (event) => {
+          const selectedSubrace = event.target.value;
+          characterData.subrace = selectedSubrace;
+          htmlData();
+        });
+    
+        output_subrace_traits.style.display = "block"
+        subrace_select_div.style.display = "block";
+      
+    
+      } else {
+        output_subrace_traits.style.display = "none"
+        subrace_select_div.style.display = "none";
+      
+        characterData.subrace = '';
+        htmlData();
+      }
+    });
 
-   subrace_select.addEventListener('change', (event) => {
-  const selectedSubrace = event.target.value;
-  output_subrace.innerHTML = '<b>' + `Subrace:`+ '</b>'+ selectedSubrace;
-  output_subrace_traits.innerHTML =  '<br>' + selectedRow.c[14].v.replace(/\n/g, '<br>');
-});
-
-    output_subrace_traits.style.display = "block"
-    subrace_select_div.style.display = "block";
-    output_subrace.style.display = "block";
-
-  } else {
-    output_subrace_traits.style.display = "none"
-    subrace_select_div.style.display = "none";
-    output_subrace.style.display = "none";
-  }
-});
 });
 
 
