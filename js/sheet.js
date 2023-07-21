@@ -1,7 +1,6 @@
 ///////////////////////////////VARIABLES////////////////////////////////
 
 
-
 let characterData = {
   race: "",
   subrace: "",
@@ -336,30 +335,24 @@ fetch(SHEET_BACKGROUNDS)
 
     function updateBackgrounds(selectedBackgrounds) {
       // Reset the background information
-      let allBackgroundFeatures = ""; // Variable to store concatenated background features
-      let allBackgroundLanguages = ""; // Variable to store concatenated background languages
-
+      characterData.background = []; 
+      characterData.features_background = []; 
+    
       selectedBackgrounds.forEach(selectedBackground => {
         const selectedRow = rows.find(row => row[0] === selectedBackground);
-
+    
         if (selectedRow) {
+          // Add background name to characterData.backgrounds
+          characterData.background.push(selectedBackground);
+    
           // Add background features to characterData.features_background
-          characterData.background = selectedBackgrounds
-          characterData.features_background = findIntersectionCell(rows, selectedBackground, 'features_background');
-          console.log(characterData.features_background)
-
-          // Add background languages to characterData.languages_background
-          characterData.languages_background = findIntersectionCell(rows, selectedBackground, 'languages_background');
-
-          allBackgroundFeatures += `<b>${selectedBackground}</b><br>${characterData.features_background}<br><br>`;
-          allBackgroundLanguages += `(${selectedBackground}) ${characterData.languages_background}<br>`;
-
+          characterData.features_background.push(findIntersectionCell(rows, selectedBackground, 'features_background'));
+    
           console.log(`Background '${selectedBackground}' information set successfully`);
         } else {
           console.log(`Background '${selectedBackground}' not found in the data`);
         }
       });
-
       htmlData();
     }
 
@@ -369,10 +362,10 @@ fetch(SHEET_BACKGROUNDS)
       // Push the selected background to the array
       selectedBackgrounds.push(selectedBackground);
 
-      // Call the updateBackgrounds function to update the sheet with all selected backgrounds
+      // Call updateBackgrounds function to update the sheet with all selected backgrounds
       updateBackgrounds(selectedBackgrounds);
 
-      // Update the HTML to display the selected backgrounds
+      // Update the HTML menu to display the selected backgrounds
       document.getElementById("selected_backgrounds").innerHTML = `${selectedBackgrounds} <button onclick="clearSelectedBackgrounds()">Clear Backgrounds</button>`;
     });
 
@@ -381,7 +374,7 @@ fetch(SHEET_BACKGROUNDS)
     console.error('Error fetching data:', error);
   });
 
-// Define the clearSelectedBackgrounds function in the global scope
+
 function clearSelectedBackgrounds() {
   // Clear the selected backgrounds array
   selectedBackgrounds = [];
@@ -392,15 +385,106 @@ function clearSelectedBackgrounds() {
   output_background_features.innerHTML = "";
   background_languages.innerHTML = "";
 
-  // Reset the background information in the characterData object
+  // reset background info in characterData object
   characterData.background = ""
   characterData.features_background = "";
   characterData.languages_background = "";
 
-  // Update the Google Sheets with the background information
   htmlData();
 }
 
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+
+
+//Function that writes the Google Docs character sheet data.
+function htmlData() {
+  const DIVbasicInfo = document.getElementById('DIVbasicInfo');
+  const DIVClassInfo = document.getElementById('DIVClassInfo');
+  const DIVFeatures = document.getElementById('DIVFeatures');
+
+  DIVbasicInfo.innerHTML = `═════════<br><h2>${characterData.name || ''}</h2>═════════
+    <t id="output_player">Player:${characterData.player || ''}</t>
+    <br>
+    
+    <t id="output_race_name"><b>Race:</b>${characterData.race || ''}</t>
+    <br>
+    
+    <t id="output_lineage">${characterData.lineage ? `<b>Lineage:</b> ${characterData.lineage}<br>` : ''}</t>
+    <t id="output_mutant">${characterData.mutant ? `<b>Mutant:</b> ${characterData.mutant}<br>` : ''}</t>
+    <t id="output_subrace">${characterData.subrace ? `<b>Subrace:</b> ${characterData.subrace}<br>` : ''}</t>
+    
+    <b>Languages:</b>
+    <t id="background_languages">${characterData.languages || ''}</t>
+    <br>
+    <b>Alignment:</b>
+    <t id="output_alignment">${characterData.alignment || ''}</t>
+    <br>
+    <b>Speed:</b>
+    <t id="output_speed">${characterData.speed || ''}</t>
+    <t id="lineage_speed">${characterData.speed_lineage || ''}</t>
+    <t id="subrace_speed">${characterData.speed_subrace || ''}</t>
+    <t id="mutant_speed">${characterData.speed_mutant || ''}</t>
+  `;
+
+
+  DIVClassInfo.innerHTML = `
+  <b>Class:</b>${characterData.class || ''}
+                <t id="output_class_name"></t><br>
+                <b>Background:</b>${characterData.background || ''}</t><br>
+                <b>Level:</b>
+                <t id="output_level"></t><br>
+                <b>HP:</b></t>${characterData.hitDice || ''}<br>
+                <b>AC:</b>
+                <t id="output_AC"></t><br>
+                <b>Initiative:</b>
+                <t id="output_Initiative"></t><br>
+  `
+
+
+  DIVFeatures.innerHTML = `
+  <div id="output_race_features" style="white-space: pre-line;">   <b>${characterData.race || ''}</b>  <br>  ${characterData.features || ''} <br> </div>
+  <div id="output_lineage_features" style="white-space: pre-line;">  <b>${characterData.lineage || ''}</b>  <br> ${characterData.features_lineage || ''}<br></div>
+  <div id="output_mutant_features" style="white-space: pre-line;">  <b>${characterData.mutant || ''}</b>  <br> ${characterData.features_mutant || ''}<br></div>
+  <div id="output_subrace_features" style="white-space: pre-line;"> <b>${characterData.subrace || ''}</b> <br>  ${characterData.features_subrace || ''}<br></div>
+  <div id="output_class_features" style="white-space: pre-line;"> <b>${characterData.class || ''}</b> <br>  ${characterData.features_class || ''}<br></div>
+  <div id="output_background_features" style="white-space: pre-line;"> <b>${characterData.background || ''}</b> <br>  ${characterData.features_background || ''}<br></div>
+`;
+
+
+setElementVisibility('output_lineage', 'subrace');
+setElementVisibility('output_mutant', 'mutant');
+setElementVisibility('output_lineage', 'lineage');
+setElementVisibility('output_player', 'player');
+
+
+  console.log("Sheet updated successfully");
+  htmlInfo()
+};
+
+function htmlInfo() {
+  const DIVlinks = document.getElementById('DIVlinks');
+
+  let classLinkHTML = '';
+  if (characterData.class) {
+    classLinkHTML = `<a href='https://www.dandwiki.com/wiki/${characterData.class}_(5e_Class)'>Wiki ${characterData.class}</a>`;
+  }
+
+  DIVlinks.innerHTML = classLinkHTML;
+}
+
+
+// let featuresHTML = '';
+
+// // Create a helper function to add feature content if it's not empty
+// function addFeatureContent(title, content) {
+//   if (content && content.trim() !== '') {
+//     featuresHTML += `
+//       <div style="white-space: pre-line;">
+//         <b>${title}</b><br>${content}<br>
+//       </div>
+//       <br>
+//     `;
+//   }
+// }

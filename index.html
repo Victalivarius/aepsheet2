@@ -5,13 +5,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Aepeonia sheet maker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&family=Rye&display=swap" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-
     <div class="container">
+
+        <div class="navbar" id="navbar">
+            <ul>
+                <li><a class="title">Aepeonia Tools</a></li>
+                <li><a href="index.html">Sheet Maker</a></li>
+                <!-- <li><a href="ChaMakerPixi\chaMaker.html">AepIcon</a></li> -->
+            </ul>
+        </div>
 
 
 
@@ -22,156 +32,155 @@
             | |  | || |____ | |\  || |__| |
             |_|  |_||______||_| \_| \____/ 
                                 -->
-<<<<<<< HEAD
-        <div class="header">
-            <a href="index.html">Aepsheet</a>
-            <a href="ChaMakerPixi\chaMaker.html">AepIcon</a>
-        </div>
-        <div class="menu" id="menu">
 
-=======
 
-        <div class="menu" id="menu">
->>>>>>> parent of 462010f (Character creator wip)
-            <h3>Menu</h3>
-            <label for="input_character_name">Character Name:</label><br>
-            <input type="text" id="input_character_name">
-            <br>
-            <label for="input_player_name">Player Name:</label><br>
-            <input type="text" id="input_player_name">
+        <div class="menu " id="menu">
+            <div class="card">
+                <h3>Menu</h3>
+                <label for="input_character_name">Character Name:</label><br>
+                <input type="text" id="input_character_name">
+                <br>
+                <label for="input_player_name">Player Name:</label><br>
+                <input type="text" id="input_player_name">
 
-            <hr>
-            <!------------------------- RACE OPTIONS --------------------------------->
-            <br>
-            <label for="race_select">Race:</label>
-            <select id="race_select">
-                <option disabled selected>Select a race</option>
-                <!-- Options will be dynamically populated with JavaScript -->
-            </select>
-            <p id="selected_races"></p>
-
-            <!---------- CHECKBOXES ---------->
-            <label for="input_mutant_checkbox">Mutant?</label>
-            <input type="checkbox" id="input_mutant_checkbox">
-
-            <div id="mutant_select_div" style="display:none;">
-                <select id="mutant_select">
-                    <option disabled selected>Select a mutant type</option>
+                <hr>
+                <!------------------------- RACE OPTIONS --------------------------------->
+                <br>
+                <label for="race_select">Race:</label>
+                <select id="race_select">
+                    <option disabled selected>Select a race</option>
                     <!-- Options will be dynamically populated with JavaScript -->
                 </select>
-            </div>
+                <p id="selected_races"></p>
 
-            <label for="input_lineage_checkbox">Lineage?</label>
-            <input type="checkbox" id="input_lineage_checkbox">
+                <!---------- CHECKBOXES ---------->
+                <label for="input_mutant_checkbox">Mutant?</label>
+                <input type="checkbox" id="input_mutant_checkbox">
 
-            <div id="lineage_select_div" style="display:none;">
-                <select id="lineage_select">
-                    <option disabled selected>Select a lineage</option>
+                <div id="mutant_select_div" style="display:none;">
+                    <select id="mutant_select">
+                        <option disabled selected>Select a mutant type</option>
+                        <!-- Options will be dynamically populated with JavaScript -->
+                    </select>
+                </div>
+
+                <label for="input_lineage_checkbox">Lineage?</label>
+                <input type="checkbox" id="input_lineage_checkbox">
+
+                <div id="lineage_select_div" style="display:none;">
+                    <select id="lineage_select">
+                        <option disabled selected>Select a lineage</option>
+                        <!-- Options will be dynamically populated with JavaScript -->
+                    </select>
+                </div>
+
+                <label for="input_subrace_checkbox">Subrace?</label>
+                <input type="checkbox" id="input_subrace_checkbox">
+
+                <div id="subrace_select_div" style="display:none;">
+                    <select id="subrace_select">
+                        <option disabled selected>Select a subrace</option>
+                        <!-- Options will be dynamically populated with JavaScript -->
+                    </select>
+
+                </div>
+                <hr>
+                <!------ CHECKBOXES OVER------------->
+                <div id="race_select_container"></div>
+                <br>
+                <label for="alignment_select">alignment:</label><br>
+                <select id="alignment_select">
+                    <option disabled selected>Select an alignment</option>
+                    <option value="Lawful Good">Lawful Good</option>
+                    <option value="Neutral Good">Neutral Good</option>
+                    <option value="Chaotic Good">Chaotic Good</option>
+                    <option value="Lawful Neutral">Lawful Neutral</option>
+                    <option value="True Neutral">True Neutral</option>
+                    <option value="Chaotic Neutral">Chaotic Neutral</option>
+                    <option value="Lawful Evil">Lawful Evil</option>
+                    <option value="Neutral Evil">Neutral Evil</option>
+                    <option value="Chaotic Evil">Chaotic Evil</option>
+                    <option value="Unaligned">Unaligned</option>
                     <!-- Options will be dynamically populated with JavaScript -->
                 </select>
-            </div>
+                <br>
 
-            <label for="input_subrace_checkbox">Subrace?</label>
-            <input type="checkbox" id="input_subrace_checkbox">
+                <label for="background_select">Background:</label><br>
+                <select id="background_select">
+                    <option disabled selected>Select a background</option>
+                    <!-- Options will be dynamically populated with JavaScript -->
+                </select><br>
+                <p id="selected_backgrounds"></p>
 
-            <div id="subrace_select_div" style="display:none;">
-                <select id="subrace_select">
-                    <option disabled selected>Select a subrace</option>
+
+
+                <!------------------------- CLASS OPTIONS--------------------------------->
+                <br>
+                <label for="class_select">Class:</label>
+                <select id="class_select">
+                    <option disabled selected>Select a class</option>
+                    <!-- Options will be dynamically populated with JavaScript -->
+                </select>
+                <br>
+                <label for="subclass_select">Subclass:</label>
+                <select id="subclass_select">
+                    <option disabled selected>None</option>
                     <!-- Options will be dynamically populated with JavaScript -->
                 </select>
 
+                <label for="input_level">Level:</label>
+                <input type="number" max="11" id="input_level">
+
+                <p id="class_message"></p>
+
+                <hr>
+                <h4>Stats options</h4>
+                <button id="roll-stats-button">Roll stats</button>
+
+                <img id="dice_image" src="dice-twenty-faces-twenty.png" alt="" class="diceimg rotate">
+                <br>
+                <b>Strength:</b>
+                <input type="number" id="strInput" min="1" max="20" value="10">
+                (<span id="strMod"></span>)
+                <br>
+
+                <b>Dexterity:</b>
+                <input type="number" id="dexInput" min="1" max="20" value="10">
+                (<span id="dexMod"></span>)
+                <br>
+
+                <b>Constitution:</b>
+                <input type="number" id="conInput" min="1" max="20" value="10">
+                (<span id="conMod"></span>)
+                <br>
+
+                <b>Intelligence:</b>
+                <input type="number" id="intInput" min="1" max="20" value="10">
+                (<span id="intMod"></span>)
+                <br>
+
+                <b>Wisdom:</b>
+                <input type="number" id="wisInput" min="1" max="20" value="10">
+                (<span id="wisMod"></span>)
+                <br>
+
+                <b>Charisma:</b>
+                <input type="number" id="chaInput" min="1" max="20" value="10">
+                (<span id="chaMod"></span>)
+                <br>
             </div>
-            <hr>
-            <!------ CHECKBOXES OVER------------->
-            <div id="race_select_container"></div>
-            <br>
-            <label for="alignment_select">alignment:</label><br>
-            <select id="alignment_select">
-                <option disabled selected>Select an alignment</option>
-                <option value="Lawful Good">Lawful Good</option>
-                <option value="Neutral Good">Neutral Good</option>
-                <option value="Chaotic Good">Chaotic Good</option>
-                <option value="Lawful Neutral">Lawful Neutral</option>
-                <option value="True Neutral">True Neutral</option>
-                <option value="Chaotic Neutral">Chaotic Neutral</option>
-                <option value="Lawful Evil">Lawful Evil</option>
-                <option value="Neutral Evil">Neutral Evil</option>
-                <option value="Chaotic Evil">Chaotic Evil</option>
-                <option value="Unaligned">Unaligned</option>
-                <!-- Options will be dynamically populated with JavaScript -->
-            </select>
-            <br>
+            <div class="card">
+                Use the button for the format to be copied properly.
 
-            <label for="background_select">Background:</label><br>
-            <select id="background_select">
-                <option disabled selected>Select a background</option>
-                <!-- Options will be dynamically populated with JavaScript -->
-            </select><br>
-            <p id="selected_backgrounds"></p>
+                <button onclick="copySheet()" class="button-55" role="button">Copy Sheet</button>
 
+                <p id="copy-message" style="display: none">Sheet copied properly!</p>
 
-
-            <!------------------------- CLASS OPTIONS--------------------------------->
-            <br>
-            <label for="class_select">Class:</label>
-            <select id="class_select">
-                <option disabled selected>Select a class</option>
-                <!-- Options will be dynamically populated with JavaScript -->
-            </select>
-            <br>
-            <label for="subclass_select">Subclass:</label>
-            <select id="subclass_select">
-                <option disabled selected>None</option>
-                <!-- Options will be dynamically populated with JavaScript -->
-            </select>
-
-            <label for="input_level">Level:</label>
-            <input type="number" max="11" id="input_level">
-
-            <p id="class_message"></p>
-
-            <hr>
-            <h4>Stats options</h4>
-            <button id="roll-stats-button">Roll stats</button>
-
-            <img id="dice_image" src="dice-twenty-faces-twenty.png" alt="" class="diceimg rotate">
-            <br>
-            <b>Strength:</b>
-            <input type="number" id="strInput" min="1" max="20" value="10">
-            (<span id="strMod"></span>)
-            <br>
-
-            <b>Dexterity:</b>
-            <input type="number" id="dexInput" min="1" max="20" value="10">
-            (<span id="dexMod"></span>)
-            <br>
-
-            <b>Constitution:</b>
-            <input type="number" id="conInput" min="1" max="20" value="10">
-            (<span id="conMod"></span>)
-            <br>
-
-            <b>Intelligence:</b>
-            <input type="number" id="intInput" min="1" max="20" value="10">
-            (<span id="intMod"></span>)
-            <br>
-
-            <b>Wisdom:</b>
-            <input type="number" id="wisInput" min="1" max="20" value="10">
-            (<span id="wisMod"></span>)
-            <br>
-
-            <b>Charisma:</b>
-            <input type="number" id="chaInput" min="1" max="20" value="10">
-            (<span id="chaMod"></span>)
-            <br>
-            <hr>
-            Use the button for the format to be copied properly.
-
-            <button onclick="copySheet()" class="button-55" role="button">Copy Sheet</button>
-
-            <p id="copy-message" style="display: none">Sheet copied properly!</p>
-            <hr>
+            </div>
+            <div class="card">
+                <h5>rolls</h5>
+                <div id='rolls'></div>
+            </div>
         </div>
 
         <!-- _____   ______   _____  _    _  _    _______ 
@@ -184,105 +193,119 @@
 
 
         <div id="result" class="sheet">
+            <div class="tabs">
+                <button class="tab-button" onclick="openTab('tab1')">Google Docs</button>
+                <button class="tab-button" onclick="openTab('tab2')">Discord(Soon)</button>
+                <button class="tab-button" onclick="openTab('tab3')">Short(Soon)</button>
+            </div>
+            <div id="tab1" class="tab-content">
+                <div id="DIVbasicInfo">
 
-            <div id="DIVbasicInfo">
+                </div>
+                <div>+-------------------------------------------+</div>
+                <div id="DIVClassInfo">
+
+                </div>
+                <div>
+                    <h3>═══════════════STATS═══════════════</b>
+                </div>
+
+                <div id="DIVStatsInfo">
+                    <p><b>Strength:</b> <span id="strValue"></span> (<span id="strModifier"></span>)</p>
+                    <p>║Athletics <span class="strSkills">()</span>
+                        ║ Strength Saving Throw <span class="strSkills">()</span>
+                    </p>
+                    <p><b>Dexterity:</b> <span id="dexValue"></span> (<span id="dexModifier"></span>)</p>
+                    <p>║ Acrobatics <span class="dexSkills">()</span>
+                        ║ Sleight of Hands <span class="dexSkills">()</span>
+                        ║ Stealth <span class="dexSkills">()</span>
+                        ║ Dexterity Saving Throw <span class="dexSkills">()</span>
+                    </p>
+                    <p><b>Constitution:</b> <span id="conValue"></span> (<span id="conModifier"></span>)</p>
+                    <p>║ Constitution Saving Throw <span class="conSkills">()</span>
+                    </p>
+                    <p><b>Intelligence:</b> <span id="intValue"></span> (<span id="intModifier"></span>)</p>
+                    <p> ║ Arcana <span class="intSkills">()</span> ║ History <span class="intSkills">()</span> ║
+                        Investigation <span class="intSkills">()</span> ║ Nature <span class="intSkills">()</span> ║
+                        Religion <span class="intSkills">()</span> ║ Intelligence Saving Throw <span
+                            class="intSkills">()</span>
+                    </p>
+                    <p><b>Wisdom:</b> <span id="wisValue"></span> (<span id="wisModifier"></span>)</p>
+                    <p>║ Animal Handling <span class="wisSkills">()</span> ║ Insight <span class="wisSkills">()</span>
+                        ║ Medicine <span class="wisSkills">()</span> ║ Perception <span class="wisSkills">()</span> ║
+                        Survival <span class="wisSkills">()</span> ║ Wisdom Saving Throw <span
+                            class="wisSkills">()</span>
+                    </p>
+                    <p><b>Charisma:</b> <span id="chaValue"></span> (<span id="chaModifier"></span>)</p>
+                    <p>║ Deception <span class="chaSkills">()</span> ║ Intimidation <span class="chaSkills">()</span> ║
+                        Performance <span class="chaSkills">()</span> ║ Persuasion <span class="chaSkills">()</span> ║
+                        Charisma Saving Throw <span class="chaSkills">()</span>
+                    </p>
+                </div>
+
+
+                <div class="indications">
+                    <!-- 
+                        <div id="output_proficiency"></div>
+                        <div id="output_stats"></div>
+                        <div id='race_stats'></div>
+                        <div id='subrace_stats'></div>
+                        <div id='lineage_stats'></div>
+                        <div id='background_stats'></div>
+                        <div id='class_stats'></div> -->
+                </div>
+
+                <div>
+                    <h3>═════════════FEATURES═════════════</h3>
+                </div>
+                <div id="DIVFeatures">
+                </div>
+
+                <div>
+                    <h3>═════════════BATTLE═════════════</h3>
+                </div>
+                <div id="weapon">WEAPON</div>
+
+                <div>
+                    <h3>═════════════EQUIPMENT═════════════</h3>
+                </div>
+
+
+                <div id="inventory">INVENTORY</div>
+                <div id="tools_proficiency">TOOLS PROFICIENCY</div>
+                <div id="companion">COMPANION</div>
+                <div>
+                    <h3>═════════════Backstory═════════════</h3>
+
+                </div>
 
             </div>
-            <div>+-------------------------------------------+</div>
-            <div id="DIVClassInfo">
-
+            <div id="tab2" class="tab-content">
+                This is the content of Tab 2.
             </div>
-            <div>
-                <h3>═══════════════STATS═══════════════</b>
-            </div>
-
-            <div id="DIVStatsInfo">
-                <p><b>Strength:</b> <span id="strValue"></span> (<span id="strModifier"></span>)</p>
-                <p>║Athletics <span class="strSkills">()</span>
-                    ║ Strength Saving Throw <span class="strSkills">()</span>
-                </p>
-                <p><b>Dexterity:</b> <span id="dexValue"></span> (<span id="dexModifier"></span>)</p>
-                <p>║ Acrobatics <span class="dexSkills">()</span>
-                    ║ Sleight of Hands <span class="dexSkills">()</span>
-                    ║ Stealth <span class="dexSkills">()</span>
-                    ║ Dexterity Saving Throw <span class="dexSkills">()</span>
-                </p>
-                <p><b>Constitution:</b> <span id="conValue"></span> (<span id="conModifier"></span>)</p>
-                <p>║ Constitution Saving Throw <span class="conSkills">()</span>
-                </p>
-                <p><b>Intelligence:</b> <span id="intValue"></span> (<span id="intModifier"></span>)</p>
-                <p> ║ Arcana <span class="intSkills">()</span> ║ History <span class="intSkills">()</span> ║
-                    Investigation <span class="intSkills">()</span> ║ Nature <span class="intSkills">()</span> ║
-                    Religion <span class="intSkills">()</span> ║ Intelligence Saving Throw <span
-                        class="intSkills">()</span>
-                </p>
-                <p><b>Wisdom:</b> <span id="wisValue"></span> (<span id="wisModifier"></span>)</p>
-                <p>║ Animal Handling <span class="wisSkills">()</span> ║ Insight <span class="wisSkills">()</span>
-                    ║ Medicine <span class="wisSkills">()</span> ║ Perception <span class="wisSkills">()</span> ║
-                    Survival <span class="wisSkills">()</span> ║ Wisdom Saving Throw <span class="wisSkills">()</span>
-                </p>
-                <p><b>Charisma:</b> <span id="chaValue"></span> (<span id="chaModifier"></span>)</p>
-                <p>║ Deception <span class="chaSkills">()</span> ║ Intimidation <span class="chaSkills">()</span> ║
-                    Performance <span class="chaSkills">()</span> ║ Persuasion <span class="chaSkills">()</span> ║
-                    Charisma Saving Throw <span class="chaSkills">()</span>
-                </p>
-            </div>
-
-
-            <div class="indications">
-                <!-- 
-                <div id="output_proficiency"></div>
-                <div id="output_stats"></div>
-                <div id='race_stats'></div>
-                <div id='subrace_stats'></div>
-                <div id='lineage_stats'></div>
-                <div id='background_stats'></div>
-                <div id='class_stats'></div> -->
-            </div>
-
-            <div>
-                <h3>═════════════FEATURES═════════════</h3>
-            </div>
-            <div id="DIVFeatures">
-            </div>
-
-            <div>
-                <h3>═════════════BATTLE═════════════</h3>
-            </div>
-            <div id="weapon">WEAPON</div>
-
-            <div>
-                <h3>═════════════EQUIPMENT═════════════</h3>
-            </div>
-
-
-            <div id="inventory">INVENTORY</div>
-            <div id="tools_proficiency">TOOLS PROFICIENCY</div>
-            <div id="companion">COMPANION</div>
-            <div>
-                <h3>═════════════MORE═════════════</h3>
-
+            <div id="tab3" class="tab-content">
+                This is the content of Tab 3.
             </div>
         </div>
 
-        <div class="info">
-            <h4>Indications</h4>
-            <div id='race_indications'></div>
-            <div id='subrace_indications'></div>
-            <div id='lineage_indications'></div>
-            <div id='background_indications'></div>
-            <div id='class_indications'></div>
-            <hr>
-            <h5>rolls</h5>
-            <div id='rolls'></div>
-        </div>
+
+    </div>
+
+    <div class="info">
+        <div id="DIVlinks"></div>
+    </div>
 
 
+    </div>
+
+    <div id="footer" class="footer">
+        Aepeonia is a homebrew DND game by <a>Spira_Virgo</a> and <a>Victalivarius</a> .
     </div>
 </body>
 
 <script src="js/init.js"></script>
 <script src="js/stats.js"></script>
 <script src="js/sheet.js"></script>
+
 
 </html>
