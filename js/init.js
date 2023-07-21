@@ -1,11 +1,22 @@
 // Helper function to assign values to characterData object
-function assignValueToCharacterData(property, rowData, columnIndex) {
-  if (rowData && rowData.c[columnIndex]) {
-    characterData[property] = rowData.c[columnIndex].v;
-  } else {
-    characterData[property] = '';
-  }
-}
+
+
+function findIntersectionCell(data, rowLabel, columnLabel) {
+  const rowIndex = data.findIndex((row) => row[0] === rowLabel);
+  if (rowIndex === -1) return null;
+
+  const headers = data[0];
+  const columnIndex = headers.indexOf(columnLabel);
+  if (columnIndex === -1) return null;
+
+  return data[rowIndex][columnIndex];
+};
+
+
+
+
+
+
 
 function htmlData() {
   const DIVbasicInfo = document.getElementById('DIVbasicInfo');
@@ -52,11 +63,12 @@ function htmlData() {
 
   DIVFeatures.innerHTML = `
   <div id="output_race_features" style="white-space: pre-line;">   <b>${characterData.race || ''}</b>  <br>  ${characterData.features || ''}</div>
-  <div id="output_lineage_features" style="white-space: pre-line;">  <b>${characterData.lineage || ''}</b>  <br> ${characterData.features_lineage || ''}</div>
-  <div id="output_mutant_features" style="white-space: pre-line;">  <b>${characterData.mutant || ''}</b>  <br> ${characterData.features_mutant || ''}</div>
-  <div id="output_subrace_features" style="white-space: pre-line;"> <b>${characterData.subrace || ''}</b> <br>  ${characterData.features_subrace || ''}</div>
-  <div id="output_class_features" style="white-space: pre-line;"> <b>${characterData.class || ''}</b> <br>  ${characterData.features_class || ''}</div>
-  <div id="output_background_features" style="white-space: pre-line;"> <b>${characterData.background || ''}</b> <br>  ${characterData.features_background || ''}</div>
+  <br>
+  <div id="output_lineage_features" style="white-space: pre-line;">  <b>${characterData.lineage || ''}</b>  <br> ${characterData.features_lineage || ''}</div><br>
+  <div id="output_mutant_features" style="white-space: pre-line;">  <b>${characterData.mutant || ''}</b>  <br> ${characterData.features_mutant || ''}</div><br>
+  <div id="output_subrace_features" style="white-space: pre-line;"> <b>${characterData.subrace || ''}</b> <br>  ${characterData.features_subrace || ''}</div><br>
+  <div id="output_class_features" style="white-space: pre-line;"> <b>${characterData.class || ''}</b> <br>  ${characterData.features_class || ''}</div><br>
+  <div id="output_background_features" style="white-space: pre-line;"> <b>${characterData.background || ''}</b> <br>  ${characterData.features_background || ''}</div><br>
 `;
 
 
@@ -90,8 +102,6 @@ function htmlData() {
 
   console.log("Sheet updated successfully");
 };
-
-
 
 
 

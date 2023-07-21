@@ -19,26 +19,29 @@ let characterData = {
   features_subclass: [],
   features_background: [],
   languages: [],
-  speed: 0,
+  speed_race: 0,
   speed_subrace: 0,
   hitDice: "",
   indications: "",
   description: "",
 };
 
-let SPREADSHEET_ID = '1_WR7ZR-NvvDnmdwbPQkz5tpzejk28eX8WA9NrmA2_64'
+const API_KEY = 'AIzaSyBj_VysQML-QtRb4vugeohwvyJ-6IX9odw';
+const SPREADSHEET_ID = '1_WR7ZR-NvvDnmdwbPQkz5tpzejk28eX8WA9NrmA2_64';
 
-const SHEET_RACES = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?sheet=RACES&range=A1:V17'
-const SHEET_TRIBESCLANS = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?sheet=' + 'TRIBESCLANS' + '&range=' + 'A1:H17';
-const SHEET_BACKGROUNDS = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?sheet=BACKGROUNDS&range=A1:I47'
-const SHEET_CLASSES = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?sheet=CLASSES&range=A1:J17'
+const SHEET_RACES = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/RACES?key=${API_KEY}`;
+const SHEET_LINEAGES = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/LINEAGES?key=${API_KEY}`;
+const SHEET_MUTATION = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/MUTATION?key=${API_KEY}`;
+const SHEET_SUBRACES = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/SUBRACES?key=${API_KEY}`;
+const SHEET_TRIBESCLANS = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/TRIBESCLANS?key=${API_KEY}`;
+const SHEET_BACKGROUNDS = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/BACKGROUNDS?key=${API_KEY}`;
+const SHEET_CLASSES = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/CLASSES?key=${API_KEY}`;
 
 htmlData();
 
 ///////////////////////////////VARIABLES////////////////////////////////
 
 //inputs
-let DIVbasicInfo = document.getElementById('DIVbasicInfo');
 let race_select = document.getElementById('race_select');
 let input_character_name = document.getElementById('input_character_name');
 let input_player_name = document.getElementById('input_player_name');
@@ -52,25 +55,6 @@ const mutant_select_div = document.getElementById("mutant_select_div");
 const mutant_select = document.getElementById("mutant_select");
 const subrace_select_div = document.getElementById("subrace_select_div");
 const subrace_select = document.getElementById("subrace_select");
-//outputs
-let output_character_name = document.getElementById('output_character_name');
-let output_player_name = document.getElementById('output_player_name');
-let output_race_features = document.getElementById('output_race_features');
-let output_race_name = document.getElementById('output_race_name');
-let output_languages = document.getElementById('output_languages');
-let output_subrace = document.getElementById('output_subrace');
-let output_mutant = document.getElementById('output_mutant');
-let output_lineage = document.getElementById('output_lineage');
-let output_lineage_features = document.getElementById('output_lineage_features');
-let output_mutant_features = document.getElementById('output_mutant_features');
-let output_subrace_features = document.getElementById('output_subrace_features');
-let output_class_features = document.getElementById('output_class_features');
-let hitdice = document.getElementById('hitdice');
-let output_HP = document.getElementById('output_HP');
-// console.log(data.table.rows[0].c[0]);
-//indications
-let class_indications = document.getElementById('class_indications');
-
 
 ////////////////////////////////////////////////////////////////////////////////////////                  
 
@@ -115,171 +99,179 @@ input_level.addEventListener('change', (event) => {
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////
 
+ //RACES
 fetch(SHEET_RACES)
-  .then(res => res.text())
-  .then(rep => {
-    let data = JSON.parse(rep.substr(47).slice(0, -2));
+  .then(response => response.json())
+  .then(data => {
+    const rows = data.values;
 
+    // Extract the race names from the first column (skip the header row)
+    const races = rows.slice(1).map(row => row[0]);
 
-    // RACE SELECT INPUT
-    data.table.rows.forEach((row) => {
+    // Fill race select dropdown.
+    races.forEach(race => {
       const option = document.createElement('option');
-      option.value = row.c[0].v; // the race name is in the first cell of each row
-      option.innerHTML = row.c[0].v;
+      option.value = race;
+      option.textContent = race;
       race_select.appendChild(option);
     });
 
-    race_select.addEventListener('change', (event) => {
-      const selectedRace = event.target.value;
-      const selectedRow = data.table.rows.find((row) => row.c[0].v === selectedRace);
-
+    // Update race to characterData and add it to html.
+    function updateRace() {
+      const selectedRace = race_select.value;
       characterData.race = selectedRace;
+      characterData.features = findIntersectionCell(rows, selectedRace, 'features_race');
+      characterData.languages = findIntersectionCell(rows, selectedRace, 'languages_race');
+      characterData.speed_race = findIntersectionCell(rows, selectedRace, 'speed_race');
+      htmlData();
+    }
 
-      // Assign race features to characterData.features
-      assignValueToCharacterData('features', selectedRow, 3);
-
-      // Assign race languages to characterData.languages
-      assignValueToCharacterData('languages', selectedRow, 4);
-
-      // Assign race speed to characterData.speed
-      assignValueToCharacterData('speed', selectedRow, 5);
-
-      htmlData()
-      console.log(characterData.features);
+    race_select.addEventListener('change', () => {
+      updateRace();
     });
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
 
-
-
-    /////////////////////////////////////////////////////////////////////////////////
-    // // // /// /////////////LINEAGES, MUTANT,  SUBRACE///////// ////// // /// /////
-    /////////////////////////////////////////////////////////////////////////////////
-
-
+   //LINEAGES
+    fetch(SHEET_LINEAGES)
+  .then(response => response.json())
+  .then(data => {
+    const rows = data.values;
     // Event listener for the lineage checkbox
-    input_lineage_checkbox.addEventListener("change", function () {
+    input_lineage_checkbox.addEventListener('change', function () {
       if (input_lineage_checkbox.checked) {
-        data.table.rows.forEach((row) => {
-          if (row.c[9]) {
-            const option = document.createElement("option");
-            option.value = row.c[9].v;
-            option.text = row.c[9].v;
-            lineage_select.appendChild(option);
-          }
+        const lineages = rows.slice(1).map(row => row[0]); 
+        console.log(lineages);
+
+        // Fill lineage select dropdown.
+        lineages.forEach(lineage => {
+          const option = document.createElement('option');
+          option.value = lineage;
+          option.textContent = lineage;
+          lineage_select.appendChild(option);
         });
 
         lineage_select.addEventListener('change', (event) => {
           const selectedLineage = event.target.value;
-          const selectedRow = data.table.rows.find((row) => row.c[9].v === selectedLineage);
-
           characterData.lineage = selectedLineage;
 
-          // Assign race features to characterData.features
-          assignValueToCharacterData('features_lineage', selectedRow, 10);
-
+          // Assign lineage features to characterData.features_lineage
+          characterData.features_lineage = findIntersectionCell(rows, selectedLineage, 'features_lineage');
+          console.log(findIntersectionCell(rows, selectedLineage, 'features_lineage'));
           htmlData();
           console.log(characterData.features_lineage);
         });
 
-        output_lineage_features.style.display = "block";
-        lineage_select_div.style.display = "block";
-        output_lineage.style.display = "block";
-
+        output_lineage_features.style.display = 'block';
+        lineage_select_div.style.display = 'block';
+        output_lineage.style.display = 'block';
       } else {
-        output_lineage_features.style.display = "none";
-        lineage_select_div.style.display = "none";
-        output_lineage.style.display = "none";
+        output_lineage_features.style.display = 'none';
+        lineage_select_div.style.display = 'none';
+        output_lineage.style.display = 'none';
         characterData.lineage = '';
+        characterData.features_lineage = '';
         htmlData();
       }
     });
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
 
-    // Event listener for the mutant checkbox
-    input_mutant_checkbox.addEventListener("change", function () {
+   //MUTATION
+  fetch(SHEET_MUTATION)
+  .then(response => response.json())
+  .then(data => {
+    const rows = data.values;
+    // Event listener for the lineage checkbox
+    input_mutant_checkbox.addEventListener('change', function () {
       if (input_mutant_checkbox.checked) {
-        data.table.rows.forEach((row) => {
-          if (row.c[19]) {
-            const option = document.createElement("option");
-            option.value = row.c[19].v;
-            option.text = row.c[19].v;
-            mutant_select.appendChild(option);
-          }
+        const mutant = rows.slice(1).map(row => row[0]); 
+        console.log(mutant);
+
+        // Fill mutation select dropdown.
+        mutant.forEach(mutant => {mutant
+          const option = document.createElement('option');
+          option.value = mutant;
+          option.textContent = mutant;
+          mutant_select.appendChild(option);
         });
 
         mutant_select.addEventListener('change', (event) => {
           const selectedMutant = event.target.value;
           characterData.mutant = selectedMutant;
 
-          const selectedRow = data.table.rows.find((row) => row.c[19].v === selectedMutant);
-
-          // Assign race features to characterData.features
-          assignValueToCharacterData('features_mutant', selectedRow, 20);
-
+          characterData.features_mutant = findIntersectionCell(rows, selectedMutant, 'features_mutant');
+          console.log(findIntersectionCell(rows, selectedMutant, 'features_mutant'));
           htmlData();
           console.log(characterData.features_mutant);
         });
 
-        output_mutant_features.style.display = "block";
-        mutant_select_div.style.display = "block";
-        output_mutant.style.display = "block";
-
+        output_mutant_features.style.display = 'block';
+        mutant_select_div.style.display = 'block';
+        output_mutant.style.display = 'block';
       } else {
-        output_mutant_features.style.display = "none";
-        mutant_select_div.style.display = "none";
-        output_mutant.style.display = "none";
+        output_mutant_features.style.display = 'none';
+        mutant_select_div.style.display = 'none';
+        output_mutant.style.display = 'none';
         characterData.mutant = '';
+        characterData.features_mutant = '';
         htmlData();
       }
     });
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
 
-
-
+  //SUBRACES
+  fetch(SHEET_SUBRACES)
+  .then(response => response.json())
+  .then(data => {
+    const rows = data.values;
+    
     // Event listener for the subrace checkbox
-    input_subrace_checkbox.addEventListener("change", function () {
+    input_subrace_checkbox.addEventListener('change', function () {
       if (input_subrace_checkbox.checked) {
-        data.table.rows.forEach((row) => {
-          if (row.c[12]) {
-            const option = document.createElement("option");
-            option.value = row.c[12].v;
-            option.text = row.c[12].v;
-            subrace_select.appendChild(option);
-            // console.log(row.c[12].v)
-          }
+        const subraces = rows.slice(1).map(row => row[0]); 
+        console.log(subraces);
+
+        // Fill subrace select dropdown.
+        subraces.forEach(subrace => {
+          const option = document.createElement('option');
+          option.value = subrace;
+          option.textContent = subrace;
+          subrace_select.appendChild(option);
         });
 
         subrace_select.addEventListener('change', (event) => {
           const selectedSubrace = event.target.value;
           characterData.subrace = selectedSubrace;
-          const selectedRow = data.table.rows.find((row) => row.c[12].v === selectedSubrace);
 
-
-
-          // Assign subrace features to characterData.features
-          assignValueToCharacterData('features_subrace', selectedRow, 14);
-          assignValueToCharacterData('speed_subrace', selectedRow, 15);
-
+          characterData.features_subrace = findIntersectionCell(rows, selectedSubrace, 'features_subrace');
+          console.log(findIntersectionCell(rows, selectedSubrace, 'features_subrace'));
           htmlData();
           console.log(characterData.features_subrace);
         });
 
-        output_subrace_features.style.display = "block"
-        subrace_select_div.style.display = "block";
-
-
+        output_subrace_features.style.display = 'block';
+        subrace_select_div.style.display = 'block';
       } else {
-        output_subrace_features.style.display = "none"
-        subrace_select_div.style.display = "none";
-
+        output_subrace_features.style.display = 'none';
+        subrace_select_div.style.display = 'none';
         characterData.subrace = '';
+        characterData.features_subrace = '';
         htmlData();
       }
     });
-
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
   });
-
-
-
 
 
 /////////////////////////////////
@@ -287,36 +279,41 @@ fetch(SHEET_RACES)
 /////////////////////////////////
 
 fetch(SHEET_CLASSES)
-  .then(res => res.text())
-  .then(rep => {
-    let data = JSON.parse(rep.substr(47).slice(0, -2));
-    console.log(data.table.rows[0].c)
+  .then(response => response.json())
+  .then(data => {
+    const rows = data.values;
 
-    // Puts class options in the select
-    data.table.rows.forEach((row) => {
+    // Extract the class names from the first column (skip the header row)
+    const classes = rows.slice(1).map(row => row[0]);
+
+    // Populate the class select dropdown
+    classes.forEach(className => {
       const option = document.createElement('option');
-      option.value = row.c[0].v; // the class name is in the first cell of each row
-      option.innerHTML = row.c[0].v;
+      option.value = className;
+      option.textContent = className;
       class_select.appendChild(option);
     });
 
     // Updates class data to the sheet
     function updateClass(selectedClass) {
-      const selectedRow = data.table.rows.find((row) => row.c[0].v === selectedClass);
-
       characterData.class = selectedClass;
-      assignValueToCharacterData('features_class', selectedRow, 4);
-      assignValueToCharacterData('hitDice', selectedRow, 5);
+      characterData.features_class = findIntersectionCell(rows, selectedClass, 'features_class');
+      characterData.hitDice = findIntersectionCell(rows, selectedClass, 'hit_dice');
       htmlData(); // Call the htmlData function to update the sheet
 
       console.log('Class information set successfully');
     }
 
     // Calls updateClass when changed
-    class_select.addEventListener('change', (event) => {
+    class_select.addEventListener('change', event => {
       updateClass(event.target.value);
     });
+
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
   });
+
 
 ////////////BACKGROUNDS/////////////////////////////
 
@@ -324,43 +321,38 @@ fetch(SHEET_CLASSES)
 let selectedBackgrounds = [];
 
 fetch(SHEET_BACKGROUNDS)
-  .then(res => res.text())
-  .then(rep => {
-    let data = JSON.parse(rep.substr(47).slice(0, -2));
-    console.log(data.table.rows[0].c)
-    /////////////////////////////////////////////////////////////////////////////////
+  .then(response => response.json())
+  .then(data => {
+    const rows = data.values;
 
-    //Adds background options to the select.
-    data.table.rows.forEach((row) => {
+    // Adds background options to the select.
+    rows.slice(1).forEach(row => {
       const option = document.createElement('option');
-      option.value = row.c[0].v; // the class name is in the first cell of each row
-      option.innerHTML = row.c[0].v;
+      option.value = row[0];
+      option.textContent = row[0];
       background_select.appendChild(option);
     });
 
 
-    const background_languages = document.getElementById('background_languages');
-    const output_background_features = document.getElementById('output_background_features');
-    const background_stats = document.getElementById('background_stats');
-    
-
     function updateBackgrounds(selectedBackgrounds) {
       // Reset the background information
       let allBackgroundFeatures = ""; // Variable to store concatenated background features
-      let allBackgroundStats = ""; // Variable to store concatenated background proficiencies
       let allBackgroundLanguages = ""; // Variable to store concatenated background languages
 
-      selectedBackgrounds.forEach((selectedBackground) => {
-        const selectedRow = data.table.rows.find((row) => row.c[0].v === selectedBackground);
+      selectedBackgrounds.forEach(selectedBackground => {
+        const selectedRow = rows.find(row => row[0] === selectedBackground);
 
         if (selectedRow) {
-          updateInnerHTML(output_background_features, selectedRow, 3, "<br>" + "<br>" + "<b>+---------------" + selectedBackground + " features----------------+</b>" + "<br>");
-          updateInnerHTML(background_stats, selectedRow, 1, "Background proficiencies:");
-          updateInnerHTML(background_languages, selectedRow, 4, "(" + selectedBackground + ")");
+          // Add background features to characterData.features_background
+          characterData.background = selectedBackgrounds
+          characterData.features_background = findIntersectionCell(rows, selectedBackground, 'features_background');
+          console.log(characterData.features_background)
 
-          allBackgroundFeatures += output_background_features.innerHTML;
-          allBackgroundStats += background_stats.innerHTML;
-          allBackgroundLanguages += background_languages.innerHTML;
+          // Add background languages to characterData.languages_background
+          characterData.languages_background = findIntersectionCell(rows, selectedBackground, 'languages_background');
+
+          allBackgroundFeatures += `<b>${selectedBackground}</b><br>${characterData.features_background}<br><br>`;
+          allBackgroundLanguages += `(${selectedBackground}) ${characterData.languages_background}<br>`;
 
           console.log(`Background '${selectedBackground}' information set successfully`);
         } else {
@@ -368,12 +360,8 @@ fetch(SHEET_BACKGROUNDS)
         }
       });
 
-      // Update the background features, proficiencies, and languages on the sheet
-      output_background_features.innerHTML = allBackgroundFeatures;
-      background_stats.innerHTML = allBackgroundStats;
-      background_languages.innerHTML = allBackgroundLanguages;
+      htmlData();
     }
-
 
     background_select.addEventListener('change', (event) => {
       const selectedBackground = event.target.value;
@@ -388,6 +376,9 @@ fetch(SHEET_BACKGROUNDS)
       document.getElementById("selected_backgrounds").innerHTML = `${selectedBackgrounds} <button onclick="clearSelectedBackgrounds()">Clear Backgrounds</button>`;
     });
 
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
   });
 
 // Define the clearSelectedBackgrounds function in the global scope
@@ -399,10 +390,17 @@ function clearSelectedBackgrounds() {
   document.getElementById("selected_backgrounds").innerHTML = "";
 
   output_background_features.innerHTML = "";
-  background_stats.innerHTML = "";
   background_languages.innerHTML = "";
-  // Update the background name on the sheet
+
+  // Reset the background information in the characterData object
+  characterData.background = ""
+  characterData.features_background = "";
+  characterData.languages_background = "";
+
+  // Update the Google Sheets with the background information
+  htmlData();
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////

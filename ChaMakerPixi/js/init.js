@@ -110,7 +110,6 @@ container.y = app.screen.height / 2;
 function swapTexture (part, num) {
     let name = "assets/" + part + "/" + num + ".png";
     localStorage.setItem(part, name);
-    console.log(name);
     makeCharacter();
 };
 
