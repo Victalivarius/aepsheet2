@@ -8,7 +8,9 @@ let characterData = {
   mutant: "",
   class: "",
   background: "",
-  stats: {},
+  stats_race: {},
+  stats_subrace: {},
+  stats_class: {},
   proficiencies: [],
   features: [],
   features_lineage: [],
@@ -108,21 +110,21 @@ fetch(SHEET_RACES)
     // Extract the race names from the first column (skip the header row)
     const races = rows.slice(1).map(row => row[0]);
 
-    // Fill race select dropdown.
+    // race select dropdown.
     races.forEach(race => {
       const option = document.createElement('option');
       option.value = race;
       option.textContent = race;
       race_select.appendChild(option);
-    });
 
-    // Update race to characterData and add it to html.
     function updateRace() {
       const selectedRace = race_select.value;
       characterData.race = selectedRace;
       characterData.features = findIntersectionCell(rows, selectedRace, 'features_race');
       characterData.languages = findIntersectionCell(rows, selectedRace, 'languages_race');
       characterData.speed_race = findIntersectionCell(rows, selectedRace, 'speed_race');
+      characterData.stats_race = findIntersectionCell(rows, selectedRace, 'stats_race');
+      console.log(characterData.stats_race);
       htmlData();
     }
 
@@ -133,6 +135,7 @@ fetch(SHEET_RACES)
   .catch(error => {
     console.error('Error fetching data:', error);
   });
+});
 
    //LINEAGES
     fetch(SHEET_LINEAGES)
@@ -253,6 +256,8 @@ fetch(SHEET_RACES)
 
           characterData.features_subrace = findIntersectionCell(rows, selectedSubrace, 'features_subrace');
           console.log(findIntersectionCell(rows, selectedSubrace, 'features_subrace'));
+          characterData.stats_subrace = findIntersectionCell(rows, selectedSubrace, 'stats_subrace');
+          console.log(characterData.stats_subrace);
           htmlData();
           console.log(characterData.features_subrace);
         });
@@ -397,12 +402,17 @@ function clearSelectedBackgrounds() {
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
+ function writeSheets() {
+  //Respective functions to update the sheets
+  //google, discord, discord short.
+ }
 
 //Function that writes the Google Docs character sheet data.
 function htmlData() {
   const DIVbasicInfo = document.getElementById('DIVbasicInfo');
   const DIVClassInfo = document.getElementById('DIVClassInfo');
   const DIVFeatures = document.getElementById('DIVFeatures');
+  const indications = document.getElementById('indications');
 
   DIVbasicInfo.innerHTML = `═════════<br><h2>${characterData.name || ''}</h2>═════════
     <t id="output_player">Player:${characterData.player || ''}</t>
@@ -440,8 +450,19 @@ function htmlData() {
                 <t id="output_AC"></t><br>
                 <b>Initiative:</b>
                 <t id="output_Initiative"></t><br>
+
+               
   `
 
+  indications.innerHTML = ` 
+  Must be done manually
+  <div id="stat">
+  ${characterData.race || ''}
+  ${characterData.stats_race || ''}<br>
+  ${characterData.subrace || ''}
+  ${characterData.stats_subrace || ''}<br>
+  ${characterData.stats_background || ''}<br>
+ </div>`
 
   DIVFeatures.innerHTML = `
   <div id="output_race_features" style="white-space: pre-line;">   <b>${characterData.race || ''}</b>  <br>  ${characterData.features || ''} <br> </div>
@@ -452,26 +473,26 @@ function htmlData() {
   <div id="output_background_features" style="white-space: pre-line;"> <b>${characterData.background || ''}</b> <br>  ${characterData.features_background || ''}<br></div>
 `;
 
-
 setElementVisibility('output_lineage', 'subrace');
 setElementVisibility('output_mutant', 'mutant');
 setElementVisibility('output_lineage', 'lineage');
 setElementVisibility('output_player', 'player');
 
-
   console.log("Sheet updated successfully");
   htmlInfo()
 };
 
+
+
 function htmlInfo() {
-  const DIVlinks = document.getElementById('DIVlinks');
+  const DIVLinks = document.getElementById('DIVLinks');
 
   let classLinkHTML = '';
   if (characterData.class) {
     classLinkHTML = `<a href='https://www.dandwiki.com/wiki/${characterData.class}_(5e_Class)'>Wiki ${characterData.class}</a>`;
   }
 
-  DIVlinks.innerHTML = classLinkHTML;
+  DIVLinks.innerHTML = classLinkHTML;
 }
 
 
