@@ -51,24 +51,32 @@ function die() {
   function updateModifier(stat) {
     // Get input and modifier elements
     const input = document.getElementById(`${stat}Input`);
+    
+    // Calculate modifier
+    const score = parseInt(input.value);
+    const modifier = Math.floor((score - 10) / 2);
+    
+    // Update the characterData object
+    characterData.stats[stat] = { value: score, modifier: modifier };
+    
+    // Rest of your code to update the displayed values
     const mod = document.getElementById(`${stat}Mod`);
     const outputMod = document.getElementById(`${stat}Modifier`);
     const statScore = document.getElementById(`${stat}Value`);
     const outputSkills = document.getElementsByClassName(`${stat}Skills`);
-
-   
-    // Calculate modifier and display
-    const score = input.value;
-    const modifier = Math.floor((score - 10) / 2);
+    
     mod.innerHTML = modifier >= 0 ? `+${modifier}` : modifier;
     outputMod.innerHTML = modifier >= 0 ? `+${modifier}` : modifier;
     statScore.innerHTML = score;
-     // Loop through the elements with the class and update their content
-     for (let i = 0; i < outputSkills.length; i++) {
+    
+    for (let i = 0; i < outputSkills.length; i++) {
       outputSkills[i].innerHTML = modifier >= 0 ? `(${modifier})` : `(${modifier})`;
     }
     
+    // Call your htmlData() function to update the sheet with the new values
+    htmlData();
   }
+  
   
   
   document.getElementById("strInput").addEventListener("change", function() {

@@ -7,25 +7,53 @@ let characterData = {
   lineage: "",
   mutant: "",
   class: "",
-  background: "",
-  stats_race: {},
-  stats_subrace: {},
-  stats_class: {},
-  proficiencies: [],
-  features: [],
-  features_lineage: [],
-  features_mutant: [],
-  features_subrace: [],
-  features_class: [],
-  features_subclass: [],
-  features_background: [],
-  languages: [],
-  speed_race: 0,
-  speed_subrace: 0,
-  hitDice: "",
+  background: [],
+
+  stats: {
+    str: { value: 0, modifier: 0 },
+    dex: { value: 0, modifier: 0 },
+    con: { value: 0, modifier: 0 },
+    int: { value: 0, modifier: 0},
+    wis: { value: 0, modifier: 0},
+    charisma: { value: 0, modifier: 0},
+    race: [],
+    class: [],
+    subclass: [],
+    lineage: [],
+    mutant: [],
+    subrace: [],
+    background: [],
+  },
+
+  features: {
+    race: [],
+    class: [],
+    subclass: [],
+    lineage: [],
+    mutant: [],
+    subrace: [],
+    background: [],
+  },
+  languages: {
+    race: [],
+    class: [],
+    subclass: [],
+    lineage: [],
+    subrace: [],
+    background: [],
+  },
+  speed: {
+    race: [],
+    subrace: [],
+  },
+  hitDice: {
+    class: [],
+    subclass: [],
+  },
   indications: "",
   description: "",
 };
+
 
 const API_KEY = 'AIzaSyBj_VysQML-QtRb4vugeohwvyJ-6IX9odw';
 const SPREADSHEET_ID = '1_WR7ZR-NvvDnmdwbPQkz5tpzejk28eX8WA9NrmA2_64';
@@ -101,7 +129,7 @@ input_level.addEventListener('change', (event) => {
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
- //RACES
+//RACES
 fetch(SHEET_RACES)
   .then(response => response.json())
   .then(data => {
@@ -117,35 +145,35 @@ fetch(SHEET_RACES)
       option.textContent = race;
       race_select.appendChild(option);
 
-    function updateRace() {
-      const selectedRace = race_select.value;
-      characterData.race = selectedRace;
-      characterData.features = findIntersectionCell(rows, selectedRace, 'features_race');
-      characterData.languages = findIntersectionCell(rows, selectedRace, 'languages_race');
-      characterData.speed_race = findIntersectionCell(rows, selectedRace, 'speed_race');
-      characterData.stats_race = findIntersectionCell(rows, selectedRace, 'stats_race');
-      console.log(characterData.stats_race);
-      htmlData();
-    }
+      function updateRace() {
+        const selectedRace = race_select.value;
+        characterData.race = selectedRace;
+        characterData.features.race = findIntersectionCell(rows, selectedRace, 'features_race');
+        characterData.languages.race = findIntersectionCell(rows, selectedRace, 'languages_race');
+        characterData.speed.race = findIntersectionCell(rows, selectedRace, 'speed_race');
+        characterData.stats.race = findIntersectionCell(rows, selectedRace, 'stats_race');
+        console.log(characterData.features.race);
+        htmlData();
+      }
 
-    race_select.addEventListener('change', () => {
-      updateRace();
-    });
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
+      race_select.addEventListener('change', () => {
+        updateRace();
+      });
+    })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   });
-});
 
-   //LINEAGES
-    fetch(SHEET_LINEAGES)
+//LINEAGES
+fetch(SHEET_LINEAGES)
   .then(response => response.json())
   .then(data => {
     const rows = data.values;
     // Event listener for the lineage checkbox
     input_lineage_checkbox.addEventListener('change', function () {
       if (input_lineage_checkbox.checked) {
-        const lineages = rows.slice(1).map(row => row[0]); 
+        const lineages = rows.slice(1).map(row => row[0]);
         console.log(lineages);
 
         // Fill lineage select dropdown.
@@ -161,7 +189,7 @@ fetch(SHEET_RACES)
           characterData.lineage = selectedLineage;
 
           // Assign lineage features to characterData.features_lineage
-          characterData.features_lineage = findIntersectionCell(rows, selectedLineage, 'features_lineage');
+          characterData.features.lineage = findIntersectionCell(rows, selectedLineage, 'features_lineage');
           console.log(findIntersectionCell(rows, selectedLineage, 'features_lineage'));
           htmlData();
           console.log(characterData.features_lineage);
@@ -175,7 +203,7 @@ fetch(SHEET_RACES)
         lineage_select_div.style.display = 'none';
         output_lineage.style.display = 'none';
         characterData.lineage = '';
-        characterData.features_lineage = '';
+        characterData.features.lineage = '';
         htmlData();
       }
     });
@@ -184,19 +212,20 @@ fetch(SHEET_RACES)
     console.error('Error fetching data:', error);
   });
 
-   //MUTATION
-  fetch(SHEET_MUTATION)
+//MUTATION
+fetch(SHEET_MUTATION)
   .then(response => response.json())
   .then(data => {
     const rows = data.values;
     // Event listener for the lineage checkbox
     input_mutant_checkbox.addEventListener('change', function () {
       if (input_mutant_checkbox.checked) {
-        const mutant = rows.slice(1).map(row => row[0]); 
+        const mutant = rows.slice(1).map(row => row[0]);
         console.log(mutant);
 
         // Fill mutation select dropdown.
-        mutant.forEach(mutant => {mutant
+        mutant.forEach(mutant => {
+          mutant
           const option = document.createElement('option');
           option.value = mutant;
           option.textContent = mutant;
@@ -207,7 +236,7 @@ fetch(SHEET_RACES)
           const selectedMutant = event.target.value;
           characterData.mutant = selectedMutant;
 
-          characterData.features_mutant = findIntersectionCell(rows, selectedMutant, 'features_mutant');
+          characterData.features.mutant = findIntersectionCell(rows, selectedMutant, 'features_mutant');
           console.log(findIntersectionCell(rows, selectedMutant, 'features_mutant'));
           htmlData();
           console.log(characterData.features_mutant);
@@ -221,7 +250,7 @@ fetch(SHEET_RACES)
         mutant_select_div.style.display = 'none';
         output_mutant.style.display = 'none';
         characterData.mutant = '';
-        characterData.features_mutant = '';
+        characterData.features.mutant = '';
         htmlData();
       }
     });
@@ -230,16 +259,16 @@ fetch(SHEET_RACES)
     console.error('Error fetching data:', error);
   });
 
-  //SUBRACES
-  fetch(SHEET_SUBRACES)
+//SUBRACES
+fetch(SHEET_SUBRACES)
   .then(response => response.json())
   .then(data => {
     const rows = data.values;
-    
+
     // Event listener for the subrace checkbox
     input_subrace_checkbox.addEventListener('change', function () {
       if (input_subrace_checkbox.checked) {
-        const subraces = rows.slice(1).map(row => row[0]); 
+        const subraces = rows.slice(1).map(row => row[0]);
         console.log(subraces);
 
         // Fill subrace select dropdown.
@@ -254,21 +283,19 @@ fetch(SHEET_RACES)
           const selectedSubrace = event.target.value;
           characterData.subrace = selectedSubrace;
 
-          characterData.features_subrace = findIntersectionCell(rows, selectedSubrace, 'features_subrace');
+          characterData.features.subrace = findIntersectionCell(rows, selectedSubrace, 'features_subrace');
           console.log(findIntersectionCell(rows, selectedSubrace, 'features_subrace'));
           characterData.stats_subrace = findIntersectionCell(rows, selectedSubrace, 'stats_subrace');
           console.log(characterData.stats_subrace);
           htmlData();
-          console.log(characterData.features_subrace);
+          console.log(characterData.features.subrace);
         });
 
-        output_subrace_features.style.display = 'block';
         subrace_select_div.style.display = 'block';
       } else {
-        output_subrace_features.style.display = 'none';
         subrace_select_div.style.display = 'none';
         characterData.subrace = '';
-        characterData.features_subrace = '';
+        characterData.features.subrace = '';
         htmlData();
       }
     });
@@ -301,7 +328,7 @@ fetch(SHEET_CLASSES)
     // Updates class data to the sheet
     function updateClass(selectedClass) {
       characterData.class = selectedClass;
-      characterData.features_class = findIntersectionCell(rows, selectedClass, 'features_class');
+      characterData.features.class = findIntersectionCell(rows, selectedClass, 'features_class');
       characterData.hitDice = findIntersectionCell(rows, selectedClass, 'hit_dice');
       htmlData(); // Call the htmlData function to update the sheet
 
@@ -336,30 +363,61 @@ fetch(SHEET_BACKGROUNDS)
       option.textContent = row[0];
       background_select.appendChild(option);
     });
-
-
     function updateBackgrounds(selectedBackgrounds) {
       // Reset the background information
-      characterData.background = []; 
-      characterData.features_background = []; 
+      const output_background_stats = document.getElementById('output_background_stats');
+      const output_background_features = document.getElementById('output_background_features');
+    
+      characterData.stats.background = {};
+      characterData.features.background = {};
     
       selectedBackgrounds.forEach(selectedBackground => {
         const selectedRow = rows.find(row => row[0] === selectedBackground);
     
         if (selectedRow) {
-          // Add background name to characterData.backgrounds
-          characterData.background.push(selectedBackground);
-    
-          // Add background features to characterData.features_background
-          characterData.features_background.push(findIntersectionCell(rows, selectedBackground, 'features_background'));
+          characterData.stats.background[selectedBackground] = findIntersectionCell(rows, selectedBackground, 'stats_background');
+          characterData.features.background[selectedBackground] = findIntersectionCell(rows, selectedBackground, 'features_background');
     
           console.log(`Background '${selectedBackground}' information set successfully`);
         } else {
           console.log(`Background '${selectedBackground}' not found in the data`);
         }
       });
+    
+      // Clear the existing content
+      output_background_stats.innerHTML = '';
+      output_background_features.innerHTML = '';
+    
+      // Update the HTML to display background stats and features
+      Object.keys(characterData.stats.background).forEach(selectedBackground => {
+        const stats = characterData.stats.background[selectedBackground];
+        const features = characterData.features.background[selectedBackground];
+    
+        if (stats && features) {
+          const statsDiv = document.createElement('div');
+          statsDiv.innerHTML = `
+            <b>${selectedBackground} proficiencies</b><br>
+            ${stats || ''}
+            <br>
+          `;
+          output_background_stats.appendChild(statsDiv);
+    
+          const featuresDiv = document.createElement('div');
+          featuresDiv.innerHTML = `
+            <b>${selectedBackground} Background Features</b><br>
+            ${features || ''}
+            <br>
+          `;
+          output_background_features.appendChild(featuresDiv);
+        }
+      });
+    
       htmlData();
-    }
+    };
+    
+    
+
+
 
     background_select.addEventListener('change', (event) => {
       const selectedBackground = event.target.value;
@@ -388,12 +446,17 @@ function clearSelectedBackgrounds() {
   document.getElementById("selected_backgrounds").innerHTML = "";
 
   output_background_features.innerHTML = "";
+  output_background_stats.innerHTML = "";
   background_languages.innerHTML = "";
 
   // reset background info in characterData object
   characterData.background = ""
-  characterData.features_background = "";
-  characterData.languages_background = "";
+  characterData.stats.background = [];
+  characterData.features.background = [];
+  characterData.languages.background = [];
+  output_background_stats.innerHTML = "";
+  output_background_features.innerHTML = "";
+
 
   htmlData();
 }
@@ -402,13 +465,14 @@ function clearSelectedBackgrounds() {
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
- function writeSheets() {
+function writeSheets() {
   //Respective functions to update the sheets
   //google, discord, discord short.
- }
+}
 
 //Function that writes the Google Docs character sheet data.
 function htmlData() {
+
   const DIVbasicInfo = document.getElementById('DIVbasicInfo');
   const DIVClassInfo = document.getElementById('DIVClassInfo');
   const DIVFeatures = document.getElementById('DIVFeatures');
@@ -432,53 +496,54 @@ function htmlData() {
     <t id="output_alignment">${characterData.alignment || ''}</t>
     <br>
     <b>Speed:</b>
-    <t id="output_speed">${characterData.speed || ''}</t>
-    <t id="lineage_speed">${characterData.speed_lineage || ''}</t>
-    <t id="subrace_speed">${characterData.speed_subrace || ''}</t>
-    <t id="mutant_speed">${characterData.speed_mutant || ''}</t>
+    <t id="output_speed">${characterData.speed.race || ''}</t>
+    <t id="lineage_speed">${characterData.speed.lineage || ''}</t>
+    <t id="subrace_speed">${characterData.speed.subrace || ''}</t>
+    <t id="mutant_speed">${characterData.speed.mutant || ''}</t>
   `;
 
 
   DIVClassInfo.innerHTML = `
   <b>Class:</b>${characterData.class || ''}
                 <t id="output_class_name"></t><br>
-                <b>Background:</b>${characterData.background || ''}</t><br>
+                <b>Background(s):</b> ${characterData.background ? characterData.background.join(', ') : ''}</t><br>
                 <b>Level:</b>
                 <t id="output_level"></t><br>
                 <b>HP:</b></t>${characterData.hitDice || ''}<br>
                 <b>AC:</b>
                 <t id="output_AC"></t><br>
-                <b>Initiative:</b>
-                <t id="output_Initiative"></t><br>
+                <b>Initiative: ${characterData.stats.dex.modifier || ''}</b>
+                <t id="output_Initiative">  </t><br>
 
                
   `
 
   indications.innerHTML = ` 
   Must be done manually
+  
   <div id="stat">
   ${characterData.race || ''}
-  ${characterData.stats_race || ''}<br>
+  ${characterData.stats.race || ''}<br>
   ${characterData.subrace || ''}
-  ${characterData.stats_subrace || ''}<br>
-  ${characterData.stats_background || ''}<br>
+  ${characterData.stats.subrace || ''}<br>
  </div>`
 
   DIVFeatures.innerHTML = `
-  <div id="output_race_features" style="white-space: pre-line;">   <b>${characterData.race || ''}</b>  <br>  ${characterData.features || ''} <br> </div>
-  <div id="output_lineage_features" style="white-space: pre-line;">  <b>${characterData.lineage || ''}</b>  <br> ${characterData.features_lineage || ''}<br></div>
-  <div id="output_mutant_features" style="white-space: pre-line;">  <b>${characterData.mutant || ''}</b>  <br> ${characterData.features_mutant || ''}<br></div>
-  <div id="output_subrace_features" style="white-space: pre-line;"> <b>${characterData.subrace || ''}</b> <br>  ${characterData.features_subrace || ''}<br></div>
-  <div id="output_class_features" style="white-space: pre-line;"> <b>${characterData.class || ''}</b> <br>  ${characterData.features_class || ''}<br></div>
-  <div id="output_background_features" style="white-space: pre-line;"> <b>${characterData.background || ''}</b> <br>  ${characterData.features_background || ''}<br></div>
+  <div id="output_race_features" style="white-space: pre-line;">  <b>${characterData.race || ''}</b>  <br> ${characterData.features.race || ''}<br></div>
+  <div id="output_lineage_features" style="white-space: pre-line;">  <b>${characterData.lineage || ''}</b>  <br> ${characterData.features.lineage || ''}<br></div>
+  <div id="output_mutant_features" style="white-space: pre-line;">  <b>${characterData.mutant || ''}</b>  <br> ${characterData.features.mutant || ''}<br></div>
+  <div id="output_subrace_features" style="white-space: pre-line;"> <b>${characterData.subrace || ''}</b> <br>  ${characterData.features.subrace || ''}<br></div>
+  <div id="output_class_features" style="white-space: pre-line;"> <b>${characterData.class || ''}</b> <br>  ${characterData.features.class || ''}<br></div>
 `;
 
-setElementVisibility('output_lineage', 'subrace');
-setElementVisibility('output_mutant', 'mutant');
-setElementVisibility('output_lineage', 'lineage');
-setElementVisibility('output_player', 'player');
+  //backgrund features are written in it's own function updateBackgrounds()
 
-  console.log("Sheet updated successfully");
+  setElementVisibility('output_lineage', 'subrace');
+  setElementVisibility('output_mutant', 'mutant');
+  setElementVisibility('output_lineage', 'lineage');
+  setElementVisibility('output_player', 'player');
+
+
   htmlInfo()
 };
 
@@ -493,7 +558,7 @@ function htmlInfo() {
   }
 
   DIVLinks.innerHTML = classLinkHTML;
-}
+};
 
 
 // let featuresHTML = '';
